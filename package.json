@@ -10,7 +10,7 @@
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css}\"",
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"!node_modules\"",
-    "lint:yaml": "yaml-lint \".github/**/*.yml\" \".github/**/*.yaml\"",
+    "lint:yaml": "npx yaml-lint \".github/**/*.yml\" \".github/**/*.yaml\"",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css}\" \"*.md\"",
     "test": "vitest run",
     "test:watch": "vitest",
