@@ -1,0 +1,157 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-header svg {
+  margin-bottom: 16px;
+  color: #24292e;
+}
+
+.login-header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #24292e;
+}
+
+.login-description {
+  text-align: center;
+  color: #586069;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.login-form {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.token-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e1e4e8;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: monospace;
+  transition: border-color 0.2s;
+}
+
+.token-input:focus {
+  outline: none;
+  border-color: #0366d6;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background: #2ea44f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background: #2c974b;
+}
+
+.login-button:active {
+  background: #298e46;
+}
+
+.instructions-toggle {
+  background: none;
+  border: none;
+  color: #0366d6;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 0;
+  text-align: left;
+  width: 100%;
+}
+
+.instructions-toggle:hover {
+  text-decoration: underline;
+}
+
+.instructions {
+  background: #f6f8fa;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.instructions h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: #24292e;
+}
+
+.instructions ol {
+  margin: 0 0 16px 0;
+  padding-left: 20px;
+}
+
+.instructions li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.instructions a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.instructions a:hover {
+  text-decoration: underline;
+}
+
+.instructions code {
+  background: #fff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.warning {
+  margin: 0;
+  padding: 12px;
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #856404;
+}
