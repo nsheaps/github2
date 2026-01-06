@@ -2,9 +2,7 @@
 name: Create Issues from TODOs
 
 on:
-  pull_request:
-    types: [opened]
-    branches: [main]
+  pull_request: {}
   workflow_dispatch: {}
 
 permissions:
