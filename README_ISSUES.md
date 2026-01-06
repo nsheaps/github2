@@ -11,7 +11,7 @@ A comprehensive markdown document containing all 85 issues with:
 - Suggested labels for categorization
 - Organized by source file/category
 
-### 2. create-issues.sh (in /tmp/)
+### 2. create-issues.sh
 A bash script that can be used to bulk-create all 85 issues using the GitHub CLI (`gh`).
 
 **Important**: This script requires GitHub CLI authentication and appropriate repository permissions.
@@ -30,8 +30,8 @@ If you have the GitHub CLI installed and authenticated:
 # Ensure you're authenticated
 gh auth login
 
-# Run the script from /tmp
-/tmp/create-issues.sh
+# Run the script from the repository root
+./create-issues.sh
 ```
 
 **Note**: The script will prompt for confirmation before creating issues.

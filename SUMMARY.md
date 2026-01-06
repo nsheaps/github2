@@ -91,6 +91,6 @@ Since the automated agent cannot create GitHub issues directly (per environment 
 
 1. `/home/runner/work/github2/github2/ISSUES_TO_CREATE.md` - Main documentation
 2. `/home/runner/work/github2/github2/README_ISSUES.md` - User guide
-3. `/tmp/create-issues.sh` - Bulk creation script (executable)
+3. `/home/runner/work/github2/github2/create-issues.sh` - Bulk creation script (executable)
 
 All files have been committed and pushed to the branch `copilot/document-todos-and-specs`.
