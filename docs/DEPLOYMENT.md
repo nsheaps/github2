@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide covers deploying the GitHub Rate Limit Viewer to GitHub Pages.
+This guide covers deploying GitHub2 to GitHub Pages.
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ The application is configured for GitHub Pages in `vite.config.ts`:
 
 ```typescript
 export default defineConfig({
-  base: '/github-rate-limit-viewer/',
+  base: '/github2/',
   // ... other config
 })
 ```

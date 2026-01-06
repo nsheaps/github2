@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/github-rate-limit-viewer/',
+  base: '/github2/',
   build: {
     outDir: 'dist',
     sourcemap: true,
