@@ -7,21 +7,25 @@ This document outlines the principles and design decisions for Continuous Integr
 ## Core Principles
 
 ### 1. Fast Feedback
+
 - CI pipelines should complete as quickly as possible
 - Parallel job execution where dependencies allow
 - Fail fast on critical errors
 
 ### 2. Comprehensive Validation
+
 - All code changes must pass linting
 - All code changes must pass tests
 - All code changes must build successfully
 
 ### 3. Consistency
+
 - CI should use the same tools as local development
 - CI should produce the same results as local runs
 - No "works on my machine" scenarios
 
 ### 4. Visibility
+
 - Clear job names and step descriptions
 - Upload artifacts for debugging
 - Provide meaningful error messages
@@ -33,6 +37,7 @@ This document outlines the principles and design decisions for Continuous Integr
 Runs on: All pushes and pull requests
 
 Jobs:
+
 1. **Lint** - Code quality checks
    - ESLint for TypeScript/JavaScript
    - Prettier for formatting
@@ -53,32 +58,38 @@ Jobs:
 Runs on: Pushes to main branch
 
 Jobs:
+
 1. **Build** - Production build with Pages config
 2. **Deploy** - Deploy to GitHub Pages
 
 ## Design Decisions
 
 ### Node Version
+
 - **Decision**: Use Node.js 20 LTS
 - **Rationale**: Stable, long-term support, compatible with all tools
 - **Review Date**: Check when Node 22 becomes LTS
 
 ### Package Manager
+
 - **Decision**: npm (not bun, yarn, or pnpm)
 - **Rationale**: Native to Node.js, most compatible, no additional installation
 - **Review Date**: Revisit if/when bun stabilizes
 
 ### Caching Strategy
+
 - **Decision**: Use setup-node's built-in npm cache
 - **Rationale**: Simple, reliable, maintained by GitHub
 - **Implementation**: `cache: 'npm'` in setup-node action
 
 ### Parallel vs Sequential
+
 - **Decision**: Run lint, test, and build in parallel
 - **Rationale**: Faster feedback, jobs are independent
 - **Exception**: Deploy requires build to complete
 
 ### Artifact Retention
+
 - **Decision**: 7 days for build artifacts
 - **Rationale**: Sufficient for debugging, minimizes storage costs
 - **Review Date**: Adjust based on actual needs

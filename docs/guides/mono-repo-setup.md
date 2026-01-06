@@ -86,12 +86,14 @@ github2/
 **Purpose**: Main web application
 
 **Dependencies**:
+
 - `@github2/shared-ui`
 - `@github2/shared-api`
 - `@github2/shared-utils`
 - React, React Router, etc.
 
 **Responsibilities**:
+
 - Main application UI
 - Routing
 - Page components
@@ -106,11 +108,13 @@ github2/
 **Purpose**: Chrome browser extension
 
 **Dependencies**:
+
 - `@github2/shared-api`
 - `@github2/shared-utils`
 - Chrome extension APIs
 
 **Responsibilities**:
+
 - Content scripts (inject buttons on GitHub)
 - Background service worker
 - Popup UI
@@ -131,12 +135,14 @@ github2/
 **Purpose**: Reusable React components
 
 **Contents**:
+
 - Button, Input, Modal, etc.
 - Dashboard widgets
 - Charts
 - Common layouts
 
 **Exported**:
+
 ```typescript
 export { Button } from './components/Button';
 export { DashboardWidget } from './components/DashboardWidget';
@@ -148,6 +154,7 @@ export { DashboardWidget } from './components/DashboardWidget';
 **Purpose**: GitHub API integration
 
 **Contents**:
+
 - API client
 - Type definitions for GitHub API
 - Request/response handling
@@ -155,6 +162,7 @@ export { DashboardWidget } from './components/DashboardWidget';
 - Authentication
 
 **Exported**:
+
 ```typescript
 export { GitHubClient } from './client';
 export type { User, Repository, Issue, PullRequest } from './types';
@@ -165,6 +173,7 @@ export type { User, Repository, Issue, PullRequest } from './types';
 **Purpose**: Framework-agnostic utilities
 
 **Contents**:
+
 - Date formatting
 - String manipulation
 - Data transformations
@@ -177,18 +186,20 @@ export type { User, Repository, Issue, PullRequest } from './types';
 **Purpose**: Shared TypeScript configuration
 
 **Contents**:
+
 ```json
 {
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "strict": true,
+    "strict": true
     // ... common settings
   }
 }
 ```
 
 **Usage in other packages**:
+
 ```json
 {
   "extends": "@github2/tsconfig-base",
@@ -203,6 +214,7 @@ export type { User, Repository, Issue, PullRequest } from './types';
 ### Package Manager Choice
 
 **Options**:
+
 1. **npm workspaces** (current default)
 2. **pnpm workspaces** (faster, more efficient)
 3. **yarn workspaces** (legacy)
@@ -212,14 +224,12 @@ export type { User, Repository, Issue, PullRequest } from './types';
 ### npm Workspaces Setup
 
 **Root package.json**:
+
 ```json
 {
   "name": "github2-monorepo",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
+  "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "dev": "npm run dev --workspace=@github2/app",
     "build": "npm run build --workspaces",
@@ -230,6 +240,7 @@ export type { User, Repository, Issue, PullRequest } from './types';
 ```
 
 **Install dependencies**:
+
 ```bash
 # Install all workspace dependencies
 npm install
@@ -250,11 +261,13 @@ npm install typescript --workspaces
 #### Option 1: Turborepo (Recommended)
 
 **Install**:
+
 ```bash
 npm install -D turbo
 ```
 
 **turbo.json**:
+
 ```json
 {
   "$schema": "https://turbo.build/schema.json",
@@ -279,6 +292,7 @@ npm install -D turbo
 ```
 
 **Usage**:
+
 ```bash
 # Build all packages in correct order
 npx turbo build
@@ -291,6 +305,7 @@ npx turbo dev
 ```
 
 **Benefits**:
+
 - Automatic dependency order
 - Caching (skip unchanged packages)
 - Parallel execution
@@ -298,7 +313,7 @@ npx turbo dev
 
 #### Option 2: Nx
 
-**More powerful but heavier**
+More powerful but heavier.
 
 **When to use**: If we need advanced features like affected commands
 
@@ -309,6 +324,7 @@ npx turbo dev
 **Strategy**: Use `*` or `workspace:*` for internal dependencies
 
 **Example** (`packages/app/package.json`):
+
 ```json
 {
   "dependencies": {
@@ -325,13 +341,14 @@ npx turbo dev
 **Strategy**: Pin major versions, allow minor/patch updates
 
 **Example**:
+
 ```json
 {
   "dependencies": {
-    "react": "^19.2.0"      // 19.x.x allowed
+    "react": "^19.2.0" // 19.x.x allowed
   },
   "devDependencies": {
-    "typescript": "~5.9.3"  // 5.9.x allowed
+    "typescript": "~5.9.3" // 5.9.x allowed
   }
 }
 ```
@@ -341,11 +358,13 @@ npx turbo dev
 ### Per-Package Configuration
 
 **Each package can have**:
+
 - Own `tsconfig.json` (extending base)
 - Own test files (co-located with source)
 - Own build configuration
 
 **Shared across packages**:
+
 - ESLint config (root)
 - Prettier config (root)
 - Testing framework (Vitest)
@@ -353,6 +372,7 @@ npx turbo dev
 ### Running Scripts
 
 **All packages**:
+
 ```bash
 npm run lint --workspaces
 npm run test --workspaces
@@ -360,12 +380,14 @@ npm run build --workspaces
 ```
 
 **Specific package**:
+
 ```bash
 npm run dev --workspace=@github2/app
 npm run build --workspace=@github2/extension-chrome
 ```
 
 **With Turbo**:
+
 ```bash
 turbo lint    # All packages
 turbo test    # All packages
@@ -377,16 +399,19 @@ turbo build   # All packages (in order)
 ### Multi-Package Deployment
 
 **App** (`packages/app`):
+
 - Build: `npm run build`
 - Deploy to: GitHub Pages
 - Trigger: Push to main
 
 **Chrome Extension** (`packages/extension-chrome`):
+
 - Build: `npm run build`
 - Deploy to: Chrome Web Store (manual or automated)
 - Trigger: Version tag (e.g., v1.0.0)
 
 **Firefox Extension** (`packages/extension-firefox`):
+
 - Build: `npm run build`
 - Deploy to: Firefox Add-ons (manual or automated)
 - Trigger: Version tag
@@ -406,12 +431,12 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build --workspaces
-      
+
   deploy-app:
     needs: build-all
     if: github.ref == 'refs/heads/main'
     # Deploy packages/app to GitHub Pages
-    
+
   deploy-chrome:
     needs: build-all
     if: startsWith(github.ref, 'refs/tags/v')
@@ -433,6 +458,7 @@ jobs:
 **Trigger**: Start building browser extension
 
 **Changes**:
+
 1. Create `packages/app/` and move current code
 2. Create `packages/extension-chrome/`
 3. Create `packages/shared-api/` for common code
@@ -446,6 +472,7 @@ jobs:
 **Trigger**: Need more shared code or more apps
 
 **Changes**:
+
 1. Extract `shared-ui`, `shared-utils`
 2. Add Turborepo for build orchestration
 3. Add `tsconfig-base` package
@@ -458,6 +485,7 @@ jobs:
 **Trigger**: Large team or complex dependencies
 
 **Changes**:
+
 1. Add Nx for advanced features
 2. Add affected command (only test changed packages)
 3. Add remote caching (speed up CI)
@@ -474,11 +502,13 @@ jobs:
 **Convention**: `@github2/package-name`
 
 **Examples**:
+
 - `@github2/app`
 - `@github2/shared-ui`
 - `@github2/extension-chrome`
 
 **Benefits**:
+
 - Clear namespace
 - Easy to identify internal packages
 - No conflicts with npm registry
@@ -486,11 +516,13 @@ jobs:
 ### Dependency Management
 
 **Rules**:
+
 1. Internal dependencies always use `workspace:*`
 2. External dependencies specified in each package
 3. Common dev dependencies can be in root
 
 **Example** (root package.json):
+
 ```json
 {
   "devDependencies": {
@@ -504,11 +536,13 @@ jobs:
 ### Code Sharing
 
 **Do**:
+
 - Extract shared logic to packages
 - Keep packages focused (single responsibility)
 - Use TypeScript for shared code (type safety)
 
 **Don't**:
+
 - Create packages for everything (start simple)
 - Share React components to non-React packages
 - Over-abstract (wait until you need it)
@@ -516,6 +550,7 @@ jobs:
 ### Documentation
 
 **Each package should have**:
+
 - README.md with purpose and usage
 - Examples of how to use
 - API documentation (for libraries)
@@ -527,6 +562,7 @@ jobs:
 **Cause**: Workspaces not installed correctly
 
 **Fix**:
+
 ```bash
 # Re-install from root
 npm install
@@ -537,6 +573,7 @@ npm install
 **Cause**: Package built before its dependencies
 
 **Fix**:
+
 - Use Turborepo: `npx turbo build`
 - Or manually build in order
 
@@ -545,6 +582,7 @@ npm install
 **Cause**: Different packages using different versions
 
 **Fix**:
+
 - Use `npm list package-name` to find conflicts
 - Align versions in package.json files
 

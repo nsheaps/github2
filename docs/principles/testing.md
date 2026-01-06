@@ -7,21 +7,25 @@ This document outlines the testing strategy and principles for the GitHub2 proje
 ## Core Principles
 
 ### 1. Test What Matters
+
 - Focus on user-facing functionality
 - Test behavior, not implementation details
 - Happy path coverage is mandatory, edge cases are important
 
 ### 2. Fast and Reliable
+
 - Tests should run quickly (<5s for unit tests)
 - No flaky tests - fix or remove
 - Deterministic results every time
 
 ### 3. Easy to Write and Maintain
+
 - Use clear, descriptive test names
 - Keep tests simple and focused
 - Minimize test setup and mocking
 
 ### 4. Test at the Right Level
+
 - Unit tests for business logic
 - Integration tests for component interactions
 - E2E tests for critical user flows
@@ -33,18 +37,21 @@ This document outlines the testing strategy and principles for the GitHub2 proje
 **Tool**: Vitest + React Testing Library
 
 **What to Test**:
+
 - React components (rendering, user interactions)
 - Custom hooks (state management, side effects)
 - Utility functions (data transformations, validations)
 - Service modules (API calls, data fetching)
 
 **What NOT to Test**:
+
 - Third-party libraries
 - Browser APIs (mock them instead)
 - Trivial getters/setters
 - Constants and types
 
 **Example Structure**:
+
 ```typescript
 describe('ComponentName', () => {
   it('should render with default props', () => {
@@ -52,7 +59,7 @@ describe('ComponentName', () => {
     // Act
     // Assert
   });
-  
+
   it('should handle user interaction', async () => {
     // Arrange
     // Act
@@ -66,6 +73,7 @@ describe('ComponentName', () => {
 **Tool**: Vitest + React Testing Library
 
 **What to Test**:
+
 - Multiple components working together
 - Data flow between components
 - State management across the app
@@ -78,12 +86,14 @@ describe('ComponentName', () => {
 **Tool**: Playwright (future)
 
 **What to Test**:
+
 - Complete user flows
 - Critical paths (login, create PR, etc.)
 - Cross-browser compatibility
 - Mobile responsiveness
 
 **Strategy**:
+
 - Run in CI on every PR
 - Use real GitHub API with test account (or mocked)
 - Capture screenshots on failure
@@ -94,6 +104,7 @@ describe('ComponentName', () => {
 ### Component Testing
 
 **DO**:
+
 - Render components with realistic props
 - Test from the user's perspective
 - Use accessible queries (getByRole, getByLabelText)
@@ -101,6 +112,7 @@ describe('ComponentName', () => {
 - Test loading and error states
 
 **DON'T**:
+
 - Test implementation details (state variables, internal methods)
 - Mock everything (prefer real implementations)
 - Use snapshot testing for everything
@@ -109,24 +121,28 @@ describe('ComponentName', () => {
 ### Hook Testing
 
 **DO**:
+
 - Use `renderHook` from @testing-library/react
 - Test the hook's return values and behavior
 - Test effects and cleanup
 - Test with different initial values
 
 **DON'T**:
+
 - Test hooks in isolation if they depend on context
 - Ignore error handling
 
 ### Service Testing
 
 **DO**:
+
 - Mock fetch/axios for API calls
 - Test request headers and body
 - Test response parsing
 - Test error scenarios
 
 **DON'T**:
+
 - Make real API calls in unit tests
 - Test network layer itself
 
@@ -165,26 +181,31 @@ describe('ComponentName', () => {
 ## Design Decisions
 
 ### Testing Framework
+
 - **Decision**: Vitest over Jest
 - **Rationale**: Faster, native ESM support, Vite integration, better DX
 - **Review Date**: Continuous
 
 ### Component Testing Library
+
 - **Decision**: React Testing Library
 - **Rationale**: Industry standard, encourages best practices, great documentation
 - **Alternative Considered**: Enzyme (deprecated)
 
 ### Mocking Strategy
+
 - **Decision**: Minimal mocking, prefer real implementations
 - **Rationale**: More realistic tests, catches integration issues
 - **When to Mock**: External APIs, slow operations, non-deterministic behavior
 
 ### Test File Location
-- **Decision**: Co-located with source files (*.test.ts, *.test.tsx)
+
+- **Decision**: Co-located with source files (_.test.ts, _.test.tsx)
 - **Rationale**: Easy to find, encourages writing tests
-- **Alternative**: Separate __tests__ directory (only for integration tests)
+- **Alternative**: Separate **tests** directory (only for integration tests)
 
 ### Assertion Library
+
 - **Decision**: Vitest's built-in assertions
 - **Rationale**: Good enough, one less dependency
 - **Extension**: @testing-library/jest-dom for DOM assertions
@@ -212,26 +233,26 @@ describe('Login', () => {
   it('should allow user to login with token', async () => {
     const user = userEvent.setup();
     const onLogin = vi.fn();
-    
+
     render(<Login onLogin={onLogin} />);
-    
+
     const input = screen.getByLabelText('GitHub Token');
     const button = screen.getByRole('button', { name: 'Login' });
-    
+
     await user.type(input, 'ghp_test123');
     await user.click(button);
-    
+
     expect(onLogin).toHaveBeenCalledWith('ghp_test123');
   });
-  
+
   it('should show error for empty token', async () => {
     const user = userEvent.setup();
-    
+
     render(<Login onLogin={vi.fn()} />);
-    
+
     const button = screen.getByRole('button', { name: 'Login' });
     await user.click(button);
-    
+
     expect(screen.getByText('Token is required')).toBeInTheDocument();
   });
 });
@@ -246,11 +267,11 @@ import { useRateLimitPolling } from './useRateLimitPolling';
 describe('useRateLimitPolling', () => {
   it('should fetch rate limit on mount', async () => {
     const { result } = renderHook(() => useRateLimitPolling('token', 5000));
-    
+
     await waitFor(() => {
       expect(result.current.rateLimit).toBeDefined();
     });
-    
+
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
   });
@@ -271,9 +292,9 @@ describe('githubService', () => {
         json: () => Promise.resolve({ rate: { limit: 5000, remaining: 4999 } }),
       })
     );
-    
+
     const result = await githubService.getRateLimit('token');
-    
+
     expect(result.rate.limit).toBe(5000);
     expect(fetch).toHaveBeenCalledWith(
       'https://api.github.com/rate_limit',

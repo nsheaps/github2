@@ -15,12 +15,14 @@ This document describes the AI-powered development tools used in the GitHub2 pro
 **Configuration**: See IDE-specific setup
 
 **Usage**:
+
 - Accept suggestions with Tab
 - Cycle through suggestions with Alt+] / Alt+[
 - Invoke inline chat with Cmd+I / Ctrl+I
 - Open chat panel for longer conversations
 
 **Best Practices**:
+
 - Write clear comments to guide Copilot
 - Review all suggestions before accepting
 - Use for boilerplate, not complex logic
@@ -30,7 +32,7 @@ This document describes the AI-powered development tools used in the GitHub2 pro
 
 **Purpose**: Larger refactoring, architectural decisions, code review
 
-**Configuration**: 
+**Configuration**:
 
 Create a `.claude.json` or `claude.md` in the project root (not committed):
 
@@ -53,6 +55,7 @@ Create a `.claude.json` or `claude.md` in the project root (not committed):
 ```
 
 **Usage**:
+
 - Provide full context in prompts
 - Ask for explanations, not just code
 - Use for architectural decisions
@@ -74,6 +77,7 @@ Create a `.claude.json` or `claude.md` in the project root (not committed):
 **Trigger**: On pull request
 **Scope**: All TypeScript/React files
 **Rules**:
+
 - Check for proper TypeScript types
 - Verify React hooks dependencies
 - Ensure tests exist for new features
@@ -84,6 +88,7 @@ Create a `.claude.json` or `claude.md` in the project root (not committed):
 **Trigger**: On changes to docs/
 **Scope**: Markdown files
 **Rules**:
+
 - Verify links are valid
 - Check code examples compile
 - Ensure diagrams are up to date
@@ -94,6 +99,7 @@ Create a `.claude.json` or `claude.md` in the project root (not committed):
 **Trigger**: Manual invocation
 **Scope**: Specified files
 **Rules**:
+
 - Maintain existing behavior
 - Improve code clarity
 - Add missing types
@@ -110,9 +116,11 @@ Place in project root (not version controlled):
 # GitHub2 Project Context
 
 ## Overview
+
 GitHub2 is a modern, performant alternative GitHub UI built with React and TypeScript.
 
 ## Code Conventions
+
 - Use TypeScript strict mode
 - Functional React components only
 - Custom hooks for reusable logic
@@ -120,24 +128,28 @@ GitHub2 is a modern, performant alternative GitHub UI built with React and TypeS
 - Follow existing file structure
 
 ## Testing
+
 - Write tests for all new features
 - Use React Testing Library best practices
 - Mock external APIs
 - Aim for 80%+ coverage
 
 ## Architecture
+
 - Client-side only (SPA)
 - Direct GitHub API integration
 - WebWorker for background sync
 - IndexedDB for offline storage
 
 ## Naming Conventions
+
 - PascalCase for components
 - camelCase for functions/variables
 - kebab-case for file names (except components)
 - Descriptive names over short names
 
 ## Import Organization
+
 1. React and external libraries
 2. Internal components
 3. Hooks
@@ -146,17 +158,20 @@ GitHub2 is a modern, performant alternative GitHub UI built with React and TypeS
 6. Styles
 
 ## State Management
+
 - React hooks (useState, useEffect, etc.)
 - Context for global state
 - Custom hooks for complex state logic
 
 ## Error Handling
+
 - Try/catch for async operations
 - User-friendly error messages
 - Log errors for debugging
 - Graceful degradation
 
 ## Performance
+
 - Lazy load routes
 - Memoize expensive computations
 - Virtualize long lists
@@ -189,6 +204,7 @@ For consistent AI-assisted development:
 ### When to Use AI Tools
 
 **Good Uses**:
+
 - Boilerplate code generation
 - Test scaffolding
 - Documentation writing
@@ -197,6 +213,7 @@ For consistent AI-assisted development:
 - Code explanations
 
 **Bad Uses**:
+
 - Critical security code
 - Complex algorithms without review
 - Anything you don't understand
@@ -206,6 +223,7 @@ For consistent AI-assisted development:
 ### Prompt Engineering
 
 **For Copilot**:
+
 ```typescript
 // Create a custom hook that fetches user data from GitHub API
 // Should handle loading, error, and success states
@@ -217,6 +235,7 @@ export function useGitHubUser(username: string) {
 ```
 
 **For Claude**:
+
 ```
 Context: Working on the GitHub2 project, specifically the rate limit viewer.
 
@@ -242,12 +261,14 @@ Current code: [paste code]
 ### Security Considerations
 
 **Never**:
+
 - Commit AI config files with secrets
 - Share tokens/credentials in prompts
 - Trust AI for security-critical code
 - Deploy AI-generated code without review
 
 **Always**:
+
 - Review generated code carefully
 - Test thoroughly
 - Use .gitignore for config files

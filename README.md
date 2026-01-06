@@ -17,6 +17,7 @@ GitHub2 is designed to be a complete reimagining of the GitHub interface with a 
 ## Current Features
 
 ### Rate Limit Viewer
+
 - 🔐 **GitHub OAuth Authentication** - Secure login with Personal Access Tokens
 - 📊 **Real-time Charts** - Live visualization of rate limit consumption over time
 - ⚡ **Configurable Polling** - Choose update intervals (5s, 10s, 30s, 60s)
@@ -25,6 +26,7 @@ GitHub2 is designed to be a complete reimagining of the GitHub interface with a 
 ## Planned Features
 
 ### Core Pages
+
 - **Dashboard**: Customizable widgets for issues, PRs, and more
 - **Homepage**: Live rate limits + configurable information panels
 - **User/Org Pages**: Profile and repository information
@@ -34,11 +36,13 @@ GitHub2 is designed to be a complete reimagining of the GitHub interface with a 
 - **Settings**: Comprehensive configuration for the client
 
 ### Browser Extensions
+
 - Chrome and Firefox extensions for seamless integration with GitHub
 - Quick navigation from github.com to github2 pages
 - Cross-device data synchronization
 
 ### Advanced Capabilities
+
 - Client-side database with WebWorker synchronization
 - Intelligent query batching and filtering
 - Skeleton screens and progressive loading
@@ -190,6 +194,7 @@ Contributions are welcome! Please follow these steps:
 5. Open a Pull Request
 
 Please ensure:
+
 - All linters pass (`npm run lint`)
 - All tests pass (`npm test`)
 - Code is formatted (`npm run format`)
@@ -208,4 +213,3 @@ For issues, questions, or suggestions:
 
 - Open an [issue](https://github.com/nsheaps/github2/issues)
 - Check existing [discussions](https://github.com/nsheaps/github2/discussions)
-

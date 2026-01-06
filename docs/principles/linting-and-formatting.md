@@ -7,21 +7,25 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 ## Core Principles
 
 ### 1. Automated and Enforced
+
 - All code must pass linters before merge
 - CI enforces all rules
 - Local tools match CI exactly
 
 ### 2. Consistent Style
+
 - One style across the entire codebase
 - No debates over formatting
 - Automate the boring stuff
 
 ### 3. Catch Bugs Early
+
 - Linters catch common mistakes
 - Type checking prevents runtime errors
 - Security vulnerabilities identified
 
 ### 4. Developer Friendly
+
 - Clear error messages
 - Auto-fix when possible
 - Fast execution
@@ -35,6 +39,7 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 **Configuration**: Flat config (`eslint.config.js`)
 
 **Rules**:
+
 - TypeScript recommended rules
 - React hooks rules (prevent infinite loops, missing dependencies)
 - React refresh rules (HMR compatibility)
@@ -42,10 +47,12 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 - No console.log in production (warnings in dev)
 
 **Scripts**:
+
 - `npm run lint:eslint` - Check for issues
 - `npx eslint . --fix` - Auto-fix issues
 
 **Exceptions**:
+
 - Use `// eslint-disable-next-line` sparingly
 - Must include comment explaining why
 - Prefer fixing the code over disabling rules
@@ -57,6 +64,7 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 **Configuration**: `.prettierrc`
 
 **Settings**:
+
 - Semi-colons: Yes
 - Single quotes: Yes (for JS/TS)
 - Trailing commas: ES5
@@ -65,10 +73,12 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 - Arrow function parentheses: Always
 
 **Scripts**:
+
 - `npm run lint:prettier` - Check formatting
 - `npm run format` - Auto-format all files
 
 **Integration**:
+
 - Prettier runs after ESLint
 - No conflicting rules
 - Format on save (recommended in IDE)
@@ -80,6 +90,7 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 **Configuration**: `.markdownlint.json`
 
 **Rules**:
+
 - Consistent heading styles
 - No trailing spaces
 - Proper link formatting
@@ -87,9 +98,11 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 - No inline HTML (with exceptions)
 
 **Scripts**:
+
 - `npm run lint:md` - Check markdown files
 
 **Exceptions**:
+
 - `<!-- markdownlint-disable -->` for complex tables
 - HTML allowed for badges in README
 - HTML allowed for complex layouts in docs
@@ -99,13 +112,16 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 **Tool**: yaml-lint
 
 **Scripts**:
+
 - `npm run lint:yaml` - Check workflow files
 
 **Scope**:
+
 - GitHub Actions workflows (`.github/**/*.yml`)
 - Other YAML config files
 
 **Rules**:
+
 - Valid YAML syntax
 - Consistent indentation
 - No duplicate keys
@@ -117,12 +133,14 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 **Configuration**: `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`
 
 **Settings**:
+
 - Strict mode enabled
 - No implicit any
 - No unused locals/parameters
 - Strict null checks
 
 **Execution**:
+
 - `npm run build` - Full type check + build
 - Editor integration for real-time feedback
 
@@ -131,12 +149,14 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 ### Which Files to Lint
 
 **Include**:
+
 - All `.ts`, `.tsx` files in `src/`
 - All `.js`, `.cjs`, `.mjs` config files
 - All `.md` files (except node_modules)
 - All `.yml`, `.yaml` in `.github/`
 
 **Exclude**:
+
 - `node_modules/`
 - `dist/`, `build/`
 - Generated files
@@ -178,26 +198,31 @@ This document outlines the linting and formatting standards for the GitHub2 proj
 ## Design Decisions
 
 ### ESLint Configuration Format
+
 - **Decision**: Flat config (eslint.config.js)
 - **Rationale**: New standard, better TypeScript support, simpler
 - **Migration**: From legacy .eslintrc.json (completed)
 
 ### Prettier vs ESLint for Formatting
+
 - **Decision**: Prettier for all formatting, ESLint for code quality
 - **Rationale**: Clear separation of concerns, less conflicts
 - **Implementation**: ESLint does not enforce style rules
 
 ### Linter Execution Order
+
 - **Decision**: ESLint → Prettier → Markdownlint → YAML
 - **Rationale**: Code quality first, formatting second, docs third
 - **CI**: Run in parallel for speed (they don't conflict)
 
 ### Auto-fix Strategy
+
 - **Decision**: Auto-fix available locally, manual in CI
 - **Rationale**: Developers can fix quickly, CI only validates
 - **Exception**: Could add auto-fix bot in future
 
 ### Markdown Linting Strictness
+
 - **Decision**: Lenient rules, focus on serious issues
 - **Rationale**: Documentation should be easy to write
 - **Balance**: Maintain consistency without being annoying
@@ -278,6 +303,7 @@ npm run build       # Type check + build
 ### Example: Adding a New ESLint Rule
 
 1. Update `eslint.config.js`:
+
 ```javascript
 export default [
   // ... existing config

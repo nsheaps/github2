@@ -13,6 +13,7 @@ This document ensures that everything CI does can be replicated locally. No "wor
 ### Why mise?
 
 `mise` (formerly rtx) is a polyglot runtime and tool version manager that:
+
 - Manages Node.js, Python, Go, etc. versions
 - Defines tasks similar to package.json scripts
 - Works across the team (same versions everywhere)
@@ -101,6 +102,7 @@ mise run dev         # Start dev server
 ### Lint
 
 **CI Does**:
+
 ```yaml
 - npm run lint:eslint
 - npm run lint:prettier
@@ -109,6 +111,7 @@ mise run dev         # Start dev server
 ```
 
 **Local Equivalent**:
+
 ```bash
 mise run lint
 # or
@@ -120,11 +123,13 @@ npm run lint
 ### Test
 
 **CI Does**:
+
 ```yaml
 - npm test
 ```
 
 **Local Equivalent**:
+
 ```bash
 mise run test
 # or
@@ -136,11 +141,13 @@ npm test
 ### Build
 
 **CI Does**:
+
 ```yaml
 - npm run build
 ```
 
 **Local Equivalent**:
+
 ```bash
 mise run build
 # or
@@ -152,6 +159,7 @@ npm run build
 ### Full CI Validation
 
 **CI Does**:
+
 ```yaml
 jobs:
   lint: ...
@@ -160,6 +168,7 @@ jobs:
 ```
 
 **Local Equivalent**:
+
 ```bash
 mise run ci
 # Runs: lint → test → build
@@ -174,6 +183,7 @@ mise run ci
 **Why**: Deterministic installs from package-lock.json
 
 **Local Should Use**:
+
 ```bash
 npm ci        # For clean install (deletes node_modules)
 # or
@@ -181,6 +191,7 @@ npm install   # For adding new packages
 ```
 
 **Don't**:
+
 - Don't commit package-lock.json changes unless adding/updating deps
 - Don't use `npm install --force` without good reason
 - Don't delete package-lock.json
@@ -194,6 +205,7 @@ npm install   # For adding new packages
 **Local**: Node.js 20 (managed by mise or nvm)
 
 **Verify**:
+
 ```bash
 node --version   # Should be 20.x
 ```
@@ -205,11 +217,13 @@ node --version   # Should be 20.x
 **Local**: Uses `.env` file (not committed)
 
 **Setup**:
+
 1. Copy `.env.example` to `.env`
 2. Fill in values (e.g., `VITE_GITHUB_CLIENT_ID`)
 3. Never commit `.env`
 
 **Example**:
+
 ```bash
 cp .env.example .env
 # Edit .env with your values
@@ -220,11 +234,13 @@ cp .env.example .env
 ### Install Dependencies
 
 **CI Does**:
+
 ```bash
 npm ci
 ```
 
 **Local Should Do**:
+
 ```bash
 mise run install
 # or
@@ -255,11 +271,13 @@ git commit -m "Add package-name"
 The `vite.config.ts` should produce identical builds locally and in CI.
 
 **Current Config**:
+
 - Base URL: `/github2/`
 - Output: `dist/`
 - Source maps: Yes
 
 **Verify**:
+
 ```bash
 npm run build
 ls -la dist/
@@ -310,6 +328,7 @@ git diff main
 ### What is Tilt?
 
 Tilt (tiltdev/tilt) is a toolkit for microservice development. For GitHub2, we'll use it to:
+
 - Run a mock GitHub Pages backend locally
 - Hot reload on file changes
 - Emulate production environment
@@ -345,6 +364,7 @@ local_resource(
 ```
 
 **Usage** (future):
+
 ```bash
 tilt up          # Start all services
 tilt down        # Stop all services
@@ -352,6 +372,7 @@ tilt logs        # View logs
 ```
 
 **Benefits**:
+
 - One command starts everything
 - Automatic rebuild on changes
 - Better than manually running npm run dev
@@ -384,6 +405,7 @@ mise run deploy     # Deploy (if needed)
 ### mise command not found
 
 **Solution**:
+
 1. Install mise: `curl https://mise.run | sh`
 2. Activate in shell: `eval "$(mise activate bash)"`
 3. Restart terminal
@@ -391,6 +413,7 @@ mise run deploy     # Deploy (if needed)
 ### Different Node version
 
 **Solution**:
+
 ```bash
 mise install       # Install correct version
 mise use node@20   # Switch to Node 20
@@ -400,6 +423,7 @@ node --version     # Verify
 ### CI passes, local fails
 
 **Solution**:
+
 1. Clean install: `rm -rf node_modules && npm ci`
 2. Check Node version: `node --version`
 3. Check for local config overrides
@@ -408,6 +432,7 @@ node --version     # Verify
 ### Local passes, CI fails
 
 **Solution**:
+
 1. Did you commit all files? `git status`
 2. Is package-lock.json committed?
 3. Are tests deterministic (no random data)?
