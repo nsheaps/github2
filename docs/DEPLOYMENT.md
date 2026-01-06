@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide covers deploying the GitHub Rate Limit Viewer to GitHub Pages.
+This guide covers deploying GitHub2 to GitHub Pages.
 
 ## Prerequisites
 
@@ -64,9 +64,9 @@ The application is configured for GitHub Pages in `vite.config.ts`:
 
 ```typescript
 export default defineConfig({
-  base: '/github-rate-limit-viewer/',
+  base: '/github2/',
   // ... other config
-})
+});
 ```
 
 **Important:** Update the `base` value to match your repository name if different.
@@ -82,14 +82,12 @@ To use a custom domain:
    ```
 
 2. Configure DNS:
-
    - For apex domain (example.com):
      - Create A records pointing to GitHub Pages IPs
    - For subdomain (`www.example.com`):
      - Create CNAME record pointing to `<username>.github.io`
 
 3. Update repository settings:
-
    - Go to **Settings** → **Pages**
    - Enter your custom domain
    - Wait for DNS verification

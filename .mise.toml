@@ -1,0 +1,87 @@
+# mise configuration for GitHub2
+# See: https://mise.jdx.dev/
+
+[tools]
+# Node.js version (matches CI)
+node = "20"
+
+# Future tools can be added here as needed
+# python = "3.11"
+# go = "1.21"
+
+[tasks.install]
+run = "npm ci"
+description = "Install dependencies"
+
+[tasks.dev]
+run = "npm run dev"
+description = "Start development server"
+
+[tasks.lint]
+run = "npm run lint"
+description = "Run all linters (ESLint, Prettier, Markdownlint, YAML)"
+
+[tasks."lint:eslint"]
+run = "npm run lint:eslint"
+description = "Run ESLint"
+
+[tasks."lint:prettier"]
+run = "npm run lint:prettier"
+description = "Check code formatting with Prettier"
+
+[tasks."lint:md"]
+run = "npm run lint:md"
+description = "Lint Markdown files"
+
+[tasks."lint:yaml"]
+run = "npm run lint:yaml"
+description = "Lint YAML files"
+
+[tasks.format]
+run = "npm run format"
+description = "Auto-format code with Prettier"
+
+[tasks.test]
+run = "npm test"
+description = "Run tests once"
+
+[tasks."test:watch"]
+run = "npm run test:watch"
+description = "Run tests in watch mode"
+
+[tasks."test:ui"]
+run = "npm run test:ui"
+description = "Run tests with UI"
+
+[tasks.build]
+run = "npm run build"
+description = "Build for production"
+
+[tasks.preview]
+run = "npm run preview"
+description = "Preview production build"
+
+[tasks.ci]
+run = """
+npm run lint
+npm test
+npm run build
+"""
+description = "Run full CI validation locally (lint + test + build)"
+
+[tasks.clean]
+run = """
+rm -rf node_modules
+rm -rf dist
+rm -rf coverage
+"""
+description = "Clean build artifacts and dependencies"
+
+[tasks.reset]
+depends = ["clean", "install"]
+description = "Clean and reinstall everything"
+
+# Future tasks for E2E testing
+# [tasks.e2e]
+# run = "npm run test:e2e"
+# description = "Run end-to-end tests"

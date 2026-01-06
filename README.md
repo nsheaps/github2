@@ -1,24 +1,57 @@
-# GitHub Rate Limit Viewer
+# GitHub2
 
-A real-time GitHub API rate limit monitoring tool built with React, TypeScript, and Vite. Monitor your GitHub API usage with live charts and configurable polling intervals.
+A modern, high-performance alternative GitHub UI client built with React, TypeScript, and Vite. GitHub2 provides a faster, more customizable interface for managing your GitHub workflow with advanced features like customizable dashboards, offline support, and cross-device sync.
 
-![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-success)
-![CI Status](https://github.com/nsheaps/github-rate-limit-viewer/workflows/CI%20-%20Validate/badge.svg)
+![CI Status](https://github.com/nsheaps/github2/workflows/CI%20-%20Validate/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-## Features
+## Overview
+
+GitHub2 is designed to be a complete reimagining of the GitHub interface with a focus on:
+
+- **Performance**: Client-side caching and WebWorkers for instant page loads
+- **Customization**: Draggable, configurable dashboard widgets
+- **Efficiency**: Minimize API calls through intelligent caching and batching
+- **Cross-Platform**: Web, browser extension, and future native app support
+
+## Current Features
+
+### Rate Limit Viewer
 
 - 🔐 **GitHub OAuth Authentication** - Secure login with Personal Access Tokens
 - 📊 **Real-time Charts** - Live visualization of rate limit consumption over time
 - ⚡ **Configurable Polling** - Choose update intervals (5s, 10s, 30s, 60s)
 - 📈 **Multi-API Tracking** - Monitor Core, Search, and GraphQL APIs simultaneously
-- 💾 **Auto-Login** - Remember authentication for seamless revisits
-- 🎨 **Modern UI** - Clean, responsive interface
-- 📱 **Mobile Friendly** - Works on all devices
+
+## Planned Features
+
+### Core Pages
+
+- **Dashboard**: Customizable widgets for issues, PRs, and more
+- **Homepage**: Live rate limits + configurable information panels
+- **User/Org Pages**: Profile and repository information
+- **Omnisearch**: Fast, fuzzy search across all GitHub resources
+- **PR/Issue Review**: Enhanced review interface with advanced features
+- **Commit Views**: Individual commits, commit history, and comparisons
+- **Settings**: Comprehensive configuration for the client
+
+### Browser Extensions
+
+- Chrome and Firefox extensions for seamless integration with GitHub
+- Quick navigation from github.com to github2 pages
+- Cross-device data synchronization
+
+### Advanced Capabilities
+
+- Client-side database with WebWorker synchronization
+- Intelligent query batching and filtering
+- Skeleton screens and progressive loading
+- Mobile-friendly responsive design
+- Offline support via PWA
 
 ## Live Demo
 
-Visit the live application: [GitHub Rate Limit Viewer](https://nsheaps.github.io/github-rate-limit-viewer/)
+Visit the live application: [GitHub2](https://nsheaps.github.io/github2/)
 
 ## Quick Start
 
@@ -31,8 +64,8 @@ Visit the live application: [GitHub Rate Limit Viewer](https://nsheaps.github.io
 
 ```bash
 # Clone the repository
-git clone https://github.com/nsheaps/github-rate-limit-viewer.git
-cd github-rate-limit-viewer
+git clone https://github.com/nsheaps/github2.git
+cd github2
 
 # Install dependencies
 npm install
@@ -47,7 +80,7 @@ The application will be available at `http://localhost:5173`
 
 1. Go to [GitHub Token Settings](https://github.com/settings/tokens/new)
 2. Click "Generate new token (classic)"
-3. Give it a descriptive name (e.g., "Rate Limit Viewer")
+3. Give it a descriptive name (e.g., "GitHub2")
 4. Select scopes (optional - `read:user` for authenticated rate limits)
 5. Click "Generate token"
 6. Copy the token and use it to login to the application
@@ -89,59 +122,24 @@ npm run preview
 ### Project Structure
 
 ```text
-github-rate-limit-viewer/
+github2/
 ├── .github/
 │   └── workflows/          # GitHub Actions CI/CD
-│       ├── ci.yml          # Validation workflow
-│       └── deploy.yml      # Deployment workflow
+├── docs/                   # Documentation
+│   ├── principles/         # Development principles
+│   ├── specs/             # Feature specifications
+│   └── guides/            # How-to guides
 ├── src/
 │   ├── components/         # React components
-│   │   ├── Dashboard.tsx
-│   │   ├── Login.tsx
-│   │   ├── RateLimitChart.tsx
-│   │   └── RateLimitStats.tsx
 │   ├── hooks/              # Custom React hooks
-│   │   ├── useAuth.ts
-│   │   └── useRateLimitPolling.ts
 │   ├── services/           # API services
-│   │   ├── auth.ts
-│   │   └── github.ts
 │   ├── types/              # TypeScript types
-│   │   └── index.ts
-│   ├── test/               # Test utilities
-│   │   └── setup.ts
-│   ├── App.tsx             # Main app component
-│   ├── main.tsx            # Entry point
-│   └── index.css           # Global styles
-├── public/                 # Static assets
-├── dist/                   # Build output
+│   └── workers/            # WebWorkers
+├── extensions/             # Browser extensions
+│   ├── chrome/
+│   └── firefox/
 └── package.json
 ```
-
-## CI/CD Setup
-
-This project uses GitHub Actions for continuous integration and deployment.
-
-### Workflows
-
-1. **CI - Validate** (`ci.yml`)
-   - Runs on all pushes and pull requests
-   - Executes linting, testing, and builds
-   - Ensures code quality
-
-2. **Deploy to GitHub Pages** (`deploy.yml`)
-   - Runs on pushes to `main` branch
-   - Builds and deploys to GitHub Pages
-   - Automatic deployment
-
-### Setting Up GitHub Pages
-
-1. Go to your repository settings
-2. Navigate to **Pages** section
-3. Under **Source**, select **GitHub Actions**
-4. Push to `main` branch to trigger deployment
-
-See [DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
 
 ## Technology Stack
 
@@ -156,27 +154,34 @@ See [DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
 
 ## Architecture
 
-This is a client-side only application (SPA) that communicates directly with the GitHub API:
+GitHub2 is a client-side application that communicates directly with the GitHub API:
 
 ```text
 ┌─────────────┐         ┌──────────────┐         ┌─────────────┐
 │   Browser   │────────▶│   React App  │────────▶│  GitHub API │
 │  (Storage)  │◀────────│  (Services)  │◀────────│             │
 └─────────────┘         └──────────────┘         └─────────────┘
+       │                       │
+       │                       ▼
+       │                ┌──────────────┐
+       └───────────────▶│  WebWorker   │
+                        │  (Sync/Cache)│
+                        └──────────────┘
 ```
 
-- **Authentication:** Personal Access Tokens stored in localStorage
-- **API Calls:** Direct to GitHub's REST API
-- **State Management:** React hooks (useState, useEffect)
-- **Polling:** Configurable intervals via custom hooks
+- **Authentication:** GitHub OAuth + Personal Access Tokens
+- **State Management:** React hooks + Context
+- **Caching:** IndexedDB via WebWorkers
+- **API Optimization:** Query batching and client-side filtering
 
-## Security Considerations
+## Documentation
 
-- Tokens are stored in browser localStorage (client-side only)
-- Never commit tokens to the repository
-- Tokens are never sent to any backend server
-- All API calls go directly to GitHub
-- Use token scopes judiciously
+Comprehensive documentation is available in the `/docs` directory:
+
+- [Development Guide](./docs/development.md) - Setup and development workflow
+- [Principles](./docs/principles/) - Development principles and patterns
+- [Specifications](./docs/specs/) - Feature specifications
+- [Deployment](./docs/DEPLOYMENT.md) - Deployment instructions
 
 ## Contributing
 
@@ -198,23 +203,13 @@ Please ensure:
 
 MIT License - see [LICENSE](LICENSE) file for details
 
-## Acknowledgments
-
-- Inspired by the [Astro deployment guide](https://xebia.com/blog/deploy-an-astro-site-to-github-pages-using-github-actions/)
-- Built with [Vite](https://vitejs.dev/) and [React](https://react.dev/)
-- Charts powered by [Recharts](https://recharts.org/)
-
 ## Roadmap
 
-- [ ] Add more API endpoints monitoring
-- [ ] Export data to CSV/JSON
-- [ ] Dark mode support
-- [ ] Alert notifications for low limits
-- [ ] React Native mobile app (future consideration)
+See [TODO.md](TODO.md) for detailed feature roadmap.
 
 ## Support
 
 For issues, questions, or suggestions:
 
-- Open an [issue](https://github.com/nsheaps/github-rate-limit-viewer/issues)
-- Check existing [discussions](https://github.com/nsheaps/github-rate-limit-viewer/discussions)
+- Open an [issue](https://github.com/nsheaps/github2/issues)
+- Check existing [discussions](https://github.com/nsheaps/github2/discussions)

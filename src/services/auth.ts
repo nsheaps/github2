@@ -24,7 +24,7 @@ export const authService = {
 
   // Start OAuth flow
   initiateLogin(): void {
-    const redirectUri = `${window.location.origin}/github-rate-limit-viewer/callback`;
+    const redirectUri = `${window.location.origin}/github2/callback`;
     const scope = 'read:user';
     const state = Math.random().toString(36).substring(7);
 
