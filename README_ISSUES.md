@@ -14,16 +14,33 @@ A comprehensive markdown document containing all 85 issues with:
 ### 2. create-issues.sh
 A bash script that can be used to bulk-create all 85 issues using the GitHub CLI (`gh`).
 
+The script supports both interactive mode (when run manually) and non-interactive mode (when run in CI).
+
+### 3. .github/workflows/create-issues.yml
+A GitHub Actions workflow that automatically creates all issues when a PR is opened to the main branch. The workflow can also be triggered manually via `workflow_dispatch`.
+
 **Important**: This script requires GitHub CLI authentication and appropriate repository permissions.
 
 ## How to Create the Issues
 
-### Option 1: Manual Creation via GitHub UI
+### Option 1: Automatic Creation via GitHub Actions (Recommended)
+
+When you open a PR to the `main` branch, the `.github/workflows/create-issues.yml` workflow will automatically run and create all 85 issues.
+
+Alternatively, you can trigger the workflow manually:
+1. Go to the [Actions tab](https://github.com/nsheaps/github2/actions)
+2. Select "Create Issues from TODOs" workflow
+3. Click "Run workflow"
+4. Select the branch and click "Run workflow"
+
+The workflow uses the built-in `GITHUB_TOKEN` with `issues: write` permission to create the issues.
+
+### Option 2: Manual Creation via GitHub UI
 1. Open [ISSUES_TO_CREATE.md](ISSUES_TO_CREATE.md)
 2. For each issue, navigate to https://github.com/nsheaps/github2/issues/new
 3. Copy the title, description, and apply labels from the document
 
-### Option 2: Bulk Creation with GitHub CLI
+### Option 3: Bulk Creation with GitHub CLI
 If you have the GitHub CLI installed and authenticated:
 
 ```bash

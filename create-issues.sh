@@ -18,8 +18,16 @@ if ! gh auth status >/dev/null 2>&1; then
 fi
 
 echo "This script will create 85 GitHub issues in the repository $REPO"
-echo "Press Ctrl+C to cancel, or Enter to continue..."
-read
+
+# Check if running in CI/non-interactive mode
+if [ -t 0 ]; then
+    # Interactive mode - prompt user
+    echo "Press Ctrl+C to cancel, or Enter to continue..."
+    read
+else
+    # Non-interactive mode (CI) - auto-continue
+    echo "Running in non-interactive mode (CI detected)"
+fi
 
 # Issue 1: Migrate to Bun Package Manager/Runtime
 gh issue create \

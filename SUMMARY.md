@@ -38,11 +38,21 @@ I conducted a comprehensive review of all documentation files from the merged PR
 
 ### 3. Created Automation Script
 
-**File: /tmp/create-issues.sh** (executable bash script)
+**File: create-issues.sh** (executable bash script)
 - Ready-to-use script for bulk issue creation
 - Uses GitHub CLI (`gh issue create`)
 - Includes all 85 issues with proper formatting
+- Supports both interactive and non-interactive (CI) modes
 - Requires authentication and appropriate permissions to run
+
+### 4. Created GitHub Actions Workflow
+
+**File: .github/workflows/create-issues.yml**
+- Automatically creates all 85 issues when a PR is opened to main
+- Can be triggered manually via workflow_dispatch
+- Uses built-in GITHUB_TOKEN with issues: write permission
+- Runs the create-issues.sh script in non-interactive mode
+- Provides summary with link to created issues
 
 ## Issue Categories
 
@@ -91,6 +101,7 @@ Since the automated agent cannot create GitHub issues directly (per environment 
 
 1. `/home/runner/work/github2/github2/ISSUES_TO_CREATE.md` - Main documentation
 2. `/home/runner/work/github2/github2/README_ISSUES.md` - User guide
-3. `/home/runner/work/github2/github2/create-issues.sh` - Bulk creation script (executable)
+3. `/home/runner/work/github2/github2/create-issues.sh` - Bulk creation script
+4. `/home/runner/work/github2/github2/.github/workflows/create-issues.yml` - Automation workflow
 
 All files have been committed and pushed to the branch `copilot/document-todos-and-specs`.
