@@ -15,7 +15,9 @@ export type PageType =
   | 'compare'
   | 'user'
   | 'notifications'
-  | 'search';
+  | 'search'
+  | 'global-issues'
+  | 'global-pulls';
 
 export interface URLParts {
   type: PageType;
@@ -116,7 +118,7 @@ const patterns: URLPattern[] = [
 
   // Commit
   {
-    pattern: /^\/([^/]+)\/([^/]+)\/commit\/([a-f0-9]+)/,
+    pattern: /^\/([^/]+)\/([^/]+)\/commit\/([a-fA-F0-9]+)/,
     type: 'commit',
     extract: (match, url) => ({
       type: 'commit',
@@ -152,7 +154,7 @@ const patterns: URLPattern[] = [
 
   // Compare
   {
-    pattern: /^\/([^/]+)\/([^/]+)\/compare\/([^.]+)\.{2,3}([^/]+)/,
+    pattern: /^\/([^/]+)\/([^/]+)\/compare\/([^.]+)\.\.\.?([^/]+)/,
     type: 'compare',
     extract: (match, url) => ({
       type: 'compare',
@@ -216,9 +218,9 @@ const patterns: URLPattern[] = [
   // Global issues
   {
     pattern: /^\/issues\/?$/,
-    type: 'issues',
+    type: 'global-issues',
     extract: (_match, url) => ({
-      type: 'issues',
+      type: 'global-issues',
       query: url.search,
       hash: url.hash,
     }),
@@ -229,9 +231,9 @@ const patterns: URLPattern[] = [
   // Global pulls
   {
     pattern: /^\/pulls\/?$/,
-    type: 'pulls',
+    type: 'global-pulls',
     extract: (_match, url) => ({
-      type: 'pulls',
+      type: 'global-pulls',
       query: url.search,
       hash: url.hash,
     }),
@@ -255,10 +257,13 @@ export class URLMapper {
 
   /**
    * Check if URL is a GitHub2 URL
+   * @param url - URL to check
+   * @param origin - Optional origin (defaults to window.location.origin if available)
    */
-  static isGitHub2URL(url: string): boolean {
+  static isGitHub2URL(url: string, origin?: string): boolean {
     try {
-      const parsed = new URL(url, window.location.origin);
+      const baseOrigin = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
+      const parsed = new URL(url, baseOrigin);
       return parsed.pathname.startsWith(GITHUB2_BASE);
     } catch {
       return false;
@@ -267,10 +272,13 @@ export class URLMapper {
 
   /**
    * Parse a URL into components
+   * @param url - URL to parse
+   * @param origin - Optional origin (defaults to window.location.origin if available)
    */
-  static parse(url: string): URLParts | null {
+  static parse(url: string, origin?: string): URLParts | null {
     try {
-      const parsed = new URL(url, window.location.origin);
+      const baseOrigin = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
+      const parsed = new URL(url, baseOrigin);
       const pathname = parsed.pathname;
 
       // Try GitHub2 URL first
@@ -331,10 +339,13 @@ export class URLMapper {
 
   /**
    * Convert GitHub2 URL to GitHub URL
+   * @param github2Url - GitHub2 URL to convert
+   * @param origin - Optional origin (defaults to window.location.origin if available)
    */
-  static toGitHub(github2Url: string): string | null {
+  static toGitHub(github2Url: string, origin?: string): string | null {
     try {
-      const parsed = new URL(github2Url, window.location.origin);
+      const baseOrigin = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
+      const parsed = new URL(github2Url, baseOrigin);
       const pathname = parsed.pathname;
 
       if (!pathname.startsWith(GITHUB2_BASE)) {
