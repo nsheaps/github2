@@ -262,7 +262,9 @@ export class URLMapper {
    */
   static isGitHub2URL(url: string, origin?: string): boolean {
     try {
-      const baseOrigin = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
+      const baseOrigin =
+        origin ||
+        (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
       const parsed = new URL(url, baseOrigin);
       return parsed.pathname.startsWith(GITHUB2_BASE);
     } catch {
@@ -277,7 +279,9 @@ export class URLMapper {
    */
   static parse(url: string, origin?: string): URLParts | null {
     try {
-      const baseOrigin = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
+      const baseOrigin =
+        origin ||
+        (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
       const parsed = new URL(url, baseOrigin);
       const pathname = parsed.pathname;
 
@@ -344,7 +348,9 @@ export class URLMapper {
    */
   static toGitHub(github2Url: string, origin?: string): string | null {
     try {
-      const baseOrigin = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
+      const baseOrigin =
+        origin ||
+        (typeof window !== 'undefined' ? window.location.origin : 'https://nsheaps.github.io');
       const parsed = new URL(github2Url, baseOrigin);
       const pathname = parsed.pathname;
 
