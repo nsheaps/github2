@@ -16,7 +16,7 @@ Base commit: 5e98118
 The original requirement was to use Bun as the package manager and runtime for this React SPA. However, during project initialization, `bun init -y` resulted in a panic/crash with "Assertion failure: Expected metadata to be set". The project currently uses npm + Vite instead. Once Bun stabilizes or the issue is resolved, we should consider migrating to Bun for better performance.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L5-L15
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L5-L15>
 
 **Labels:** enhancement, future, dependencies
 
@@ -28,7 +28,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L5-L15
 Complete the setup of React SPA with TypeScript as part of the core application foundation.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L21
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L21>
 
 **Labels:** core, setup
 
@@ -40,7 +40,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L21
 Finalize Vite configuration for both development and production builds.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L22
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L22>
 
 **Labels:** build, configuration
 
@@ -52,7 +52,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L22
 Implement the base routing structure for the application.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L23
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L23>
 
 **Labels:** routing, architecture
 
@@ -64,7 +64,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L23
 Implement GitHub OAuth login flow using OAuth App (not GitHub App).
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L27
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L27>
 
 **Labels:** authentication, oauth
 
@@ -76,7 +76,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L27
 Build the login component/page for the authentication flow.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L28
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L28>
 
 **Labels:** ui, authentication
 
@@ -88,7 +88,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L28
 Implement secure token management using localStorage for storing authentication tokens.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L29
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L29>
 
 **Labels:** authentication, storage
 
@@ -100,7 +100,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L29
 Implement functionality to automatically log users in when they revisit the application if they have a valid stored token.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L30
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L30>
 
 **Labels:** authentication, ux
 
@@ -112,7 +112,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L30
 Add logout functionality that properly clears tokens and session data.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L31
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L31>
 
 **Labels:** authentication
 
@@ -124,7 +124,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L31
 Build an API service to interact with GitHub's rate limit endpoint for monitoring API usage.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L35
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L35>
 
 **Labels:** api, rate-limit
 
@@ -136,7 +136,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L35
 Create a control panel component for managing rate limit viewer settings.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L36
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L36>
 
 **Labels:** ui, rate-limit
 
@@ -148,7 +148,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L36
 Add a dropdown selector that allows users to configure the polling interval for rate limit checks.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L37
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L37>
 
 **Labels:** ui, rate-limit, configuration
 
@@ -160,7 +160,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L37
 Implement a real-time chart or graph to visualize rate limit data over time.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L38
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L38>
 
 **Labels:** ui, visualization, rate-limit
 
@@ -172,7 +172,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L38
 Show the current rate limit status prominently in the UI.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L39
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L39>
 
 **Labels:** ui, rate-limit
 
@@ -184,7 +184,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L39
 Set up ESLint configuration for all TypeScript and JavaScript file types.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L43
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L43>
 
 **Labels:** linting, code-quality
 
@@ -196,7 +196,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L43
 Configure Prettier for consistent code formatting across the project.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L44
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L44>
 
 **Labels:** formatting, code-quality
 
@@ -208,7 +208,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L44
 Set up markdownlint for maintaining consistent Markdown file formatting.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L45
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L45>
 
 **Labels:** linting, documentation
 
@@ -220,7 +220,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L45
 Add YAML linting (yamllint or similar) for configuration files.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L46
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L46>
 
 **Labels:** linting, code-quality
 
@@ -232,7 +232,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L46
 Implement JSON linting and validation for JSON configuration files.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L47
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L47>
 
 **Labels:** linting, code-quality
 
@@ -244,7 +244,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L47
 Add comprehensive lint scripts to package.json for easy execution.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L48
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L48>
 
 **Labels:** tooling, scripts
 
@@ -256,7 +256,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L48
 Configure Vitest as the unit testing framework.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L52
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L52>
 
 **Labels:** testing, setup
 
@@ -268,7 +268,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L52
 Set up React Testing Library for component testing.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L53
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L53>
 
 **Labels:** testing, setup
 
@@ -280,7 +280,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L53
 Create comprehensive tests for the authentication flow including login, logout, and token management.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L54
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L54>
 
 **Labels:** testing, authentication
 
@@ -292,7 +292,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L54
 Implement tests for the rate limit polling logic to ensure it works correctly.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L55
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L55>
 
 **Labels:** testing, rate-limit
 
@@ -304,7 +304,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L55
 Add tests to verify chart rendering works correctly with various data inputs.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L56
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L56>
 
 **Labels:** testing, visualization
 
@@ -316,7 +316,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L56
 Include test scripts in package.json for running the test suite.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L57
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L57>
 
 **Labels:** testing, scripts
 
@@ -328,7 +328,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L57
 Enhance README with a comprehensive project overview.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L61
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L61>
 
 **Labels:** documentation
 
@@ -340,7 +340,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L61
 Document detailed setup instructions for new developers.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L62
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L62>
 
 **Labels:** documentation, onboarding
 
@@ -352,7 +352,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L62
 Provide clear documentation on how to configure the GitHub OAuth App.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L63
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L63>
 
 **Labels:** documentation, authentication
 
@@ -364,7 +364,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L63
 Document the CI/CD setup process and workflows.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L64
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L64>
 
 **Labels:** documentation, ci-cd
 
@@ -376,7 +376,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L64
 Create a usage guide for end users of the application.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L65
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L65>
 
 **Labels:** documentation
 
@@ -388,7 +388,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L65
 List and document all required environment variables for the application.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L66
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L66>
 
 **Labels:** documentation, configuration
 
@@ -400,7 +400,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L66
 Set up a GitHub Actions validation workflow that lints all file types.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L70
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L70>
 
 **Labels:** ci-cd, linting
 
@@ -412,7 +412,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L70
 Implement a GitHub Actions workflow for running tests.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L71
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L71>
 
 **Labels:** ci-cd, testing
 
@@ -424,7 +424,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L71
 Set up a GitHub Actions workflow for building the application.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L72
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L72>
 
 **Labels:** ci-cd, build
 
@@ -436,7 +436,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L72
 Implement a GitHub Actions workflow to deploy the application to GitHub Pages.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L73
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L73>
 
 **Labels:** ci-cd, deployment
 
@@ -448,7 +448,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L73
 Set up and configure GitHub Pages settings for the repository.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L74
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L74>
 
 **Labels:** deployment, configuration
 
@@ -460,7 +460,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L74
 Configure the correct base URL path for GitHub Pages deployment.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L75
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L75>
 
 **Labels:** deployment, configuration
 
@@ -472,7 +472,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L75
 Perform end-to-end testing of the complete OAuth authentication flow.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L79
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L79>
 
 **Labels:** testing, authentication
 
@@ -484,7 +484,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L79
 Conduct comprehensive testing of rate limit polling and charting functionality.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L80
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L80>
 
 **Labels:** testing, rate-limit
 
@@ -496,7 +496,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L80
 Ensure all configured linters execute successfully without errors.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L81
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L81>
 
 **Labels:** testing, linting
 
@@ -508,7 +508,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L81
 Confirm that all tests in the test suite pass successfully.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L82
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L82>
 
 **Labels:** testing
 
@@ -520,7 +520,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L82
 Ensure the production build process completes successfully.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L83
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L83>
 
 **Labels:** testing, build
 
@@ -532,7 +532,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L83
 Test and confirm that deployment to GitHub Pages works correctly.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L84
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L84>
 
 **Labels:** testing, deployment
 
@@ -544,7 +544,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L84
 Conduct a comprehensive review of all documentation before release.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L85
+<https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L85>
 
 **Labels:** documentation, review
 
@@ -558,7 +558,7 @@ https://github.com/nsheaps/github2/blob/5e98118/TODO.md#L85
 Complete the implementation of the URLMapper class for bidirectional URL conversion between GitHub and GitHub2.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L280
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L280>
 
 **Labels:** feature, url-mapping
 
@@ -570,7 +570,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Define all URL patterns for supported GitHub page types (repos, issues, PRs, commits, etc.).
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L281
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L281>
 
 **Labels:** feature, url-mapping
 
@@ -582,7 +582,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Create comprehensive unit tests covering all URL pattern conversions.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L282
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L282>
 
 **Labels:** testing, url-mapping
 
@@ -594,7 +594,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Document all supported URL patterns in the URL mapping service.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L283
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L283>
 
 **Labels:** documentation, url-mapping
 
@@ -606,7 +606,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Develop a React hook for URL redirection functionality.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L287
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L287>
 
 **Labels:** feature, react, url-mapping
 
@@ -618,7 +618,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Create a redirect button component for navigation between GitHub and GitHub2.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L288
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L288>
 
 **Labels:** ui, url-mapping
 
@@ -630,7 +630,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Integrate the URL redirection system with the application's routing infrastructure.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L289
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L289>
 
 **Labels:** feature, routing, url-mapping
 
@@ -642,7 +642,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Write tests for the useURLRedirect React hook.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L290
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L290>
 
 **Labels:** testing, react, url-mapping
 
@@ -654,7 +654,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Integrate URLMapper into the browser extension's content script for GitHub page detection.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L294
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L294>
 
 **Labels:** extension, url-mapping
 
@@ -666,7 +666,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Inject "Open in GitHub2" buttons onto GitHub.com pages via the browser extension.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L295
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L295>
 
 **Labels:** extension, ui
 
@@ -678,7 +678,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Implement click event handlers for the "Open in GitHub2" buttons in the extension.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L296
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L296>
 
 **Labels:** extension
 
@@ -690,7 +690,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Test the browser extension functionality across various GitHub page types to ensure compatibility.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L297
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L297>
 
 **Labels:** testing, extension
 
@@ -702,7 +702,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Determine whether to support gist.github.com URLs in the URL mapping service. Currently marked as TBD.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L388
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L388>
 
 **Labels:** decision, url-mapping
 
@@ -714,7 +714,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Finalize the decision on whether to auto-redirect users or require explicit user action (extension button). Currently leaning toward user action.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L389
+<https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md#L389>
 
 **Labels:** decision, ux
 
@@ -728,7 +728,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/specs/url-redirects/SPEC.md
 Implement end-to-end testing using Playwright for comprehensive application testing.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L215
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L215>
 
 **Labels:** enhancement, testing, e2e
 
@@ -740,7 +740,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L215
 Set up visual regression testing to catch unintended UI changes.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L216
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L216>
 
 **Labels:** enhancement, testing, visual
 
@@ -752,7 +752,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L216
 Implement performance testing to monitor and optimize application speed.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L217
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L217>
 
 **Labels:** enhancement, testing, performance
 
@@ -764,7 +764,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L217
 Automate accessibility testing to ensure the application meets WCAG standards.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L218
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L218>
 
 **Labels:** enhancement, testing, accessibility
 
@@ -776,7 +776,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L218
 Implement mutation testing to verify the quality of the test suite.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L219
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L219>
 
 **Labels:** enhancement, testing
 
@@ -788,7 +788,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L219
 Set up code coverage reporting in the CI pipeline.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L220
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L220>
 
 **Labels:** enhancement, ci-cd, testing
 
@@ -800,7 +800,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L220
 Automatically post test reports as comments on pull requests.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L221
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L221>
 
 **Labels:** enhancement, ci-cd, testing
 
@@ -814,7 +814,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/testing.md#L221
 Add stylelint for CSS file linting if needed for the project.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L293
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L293>
 
 **Labels:** enhancement, linting, css
 
@@ -826,7 +826,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-form
 Implement commitlint to enforce consistent commit message formatting.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L294
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L294>
 
 **Labels:** enhancement, linting, git
 
@@ -838,7 +838,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-form
 Consider adding pre-commit hooks for automated linting before commits.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L295
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L295>
 
 **Labels:** enhancement, tooling, optional
 
@@ -850,7 +850,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-form
 Add eslint-plugin-import for automatic import statement sorting.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L296
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L296>
 
 **Labels:** enhancement, linting
 
@@ -862,7 +862,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-form
 Implement spell checking for code comments and documentation.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L297
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L297>
 
 **Labels:** enhancement, documentation
 
@@ -874,7 +874,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-form
 Add tooling to verify that all source files have proper license headers.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L298
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L298>
 
 **Labels:** enhancement, legal
 
@@ -886,7 +886,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-form
 Evaluate and potentially migrate to Biome as a replacement for ESLint + Prettier.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L299
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-formatting.md#L299>
 
 **Labels:** enhancement, tooling, evaluation
 
@@ -900,7 +900,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/linting-and-form
 Add an end-to-end testing job to the CI/CD pipeline.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L99
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L99>
 
 **Labels:** enhancement, ci-cd, e2e
 
@@ -912,7 +912,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L99
 Integrate visual regression testing into the CI pipeline.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L100
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L100>
 
 **Labels:** enhancement, ci-cd, visual
 
@@ -924,7 +924,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L10
 Add performance benchmarking to the CI pipeline to track performance over time.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L101
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L101>
 
 **Labels:** enhancement, ci-cd, performance
 
@@ -936,7 +936,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L10
 Implement automated dependency vulnerability scanning in CI.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L102
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L102>
 
 **Labels:** enhancement, ci-cd, security
 
@@ -948,7 +948,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L10
 Add code coverage reporting to the CI pipeline.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L103
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L103>
 
 **Labels:** enhancement, ci-cd, testing
 
@@ -960,7 +960,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L10
 Implement automatic PR labeling based on the files and types of changes in the PR.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L104
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L104>
 
 **Labels:** enhancement, ci-cd, automation
 
@@ -972,7 +972,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L10
 Implement automated changeset management and release workflows.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L105
+<https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L105>
 
 **Labels:** enhancement, ci-cd, release
 
@@ -986,7 +986,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/principles/ci-design.md#L10
 Add support for Codeium as an open-source alternative AI coding assistant.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L302
+<https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L302>
 
 **Labels:** enhancement, ai-tools
 
@@ -998,7 +998,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-u
 Set up Continue.dev to work with local language models.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L303
+<https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L303>
 
 **Labels:** enhancement, ai-tools
 
@@ -1010,7 +1010,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-u
 Create custom instructions for GitHub Copilot to improve code suggestions.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L304
+<https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L304>
 
 **Labels:** enhancement, ai-tools
 
@@ -1022,7 +1022,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-u
 Build a library of project-specific prompts for AI coding assistants.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L305
+<https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L305>
 
 **Labels:** enhancement, ai-tools
 
@@ -1034,7 +1034,7 @@ https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-u
 Implement AI-powered automated code review in the CI/CD pipeline.
 
 **Source:**
-https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L306
+<https://github.com/nsheaps/github2/blob/5e98118/docs/guides/ai-tool-config-and-usage.md#L306>
 
 **Labels:** enhancement, ci-cd, ai-tools
 

@@ -47,7 +47,8 @@ I conducted a comprehensive review of all documentation files from the merged PR
 
 ### 4. Created GitHub Actions Workflow
 
-**File: .github/workflows/create-issues.yml**
+#### File: .github/workflows/create-issues.yml
+
 - Automatically creates all 85 issues when a PR is opened to main
 - Can be triggered manually via workflow_dispatch
 - Uses built-in GITHUB_TOKEN with issues: write permission

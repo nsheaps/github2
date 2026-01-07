@@ -37,7 +37,7 @@ The workflow uses the built-in `GITHUB_TOKEN` with `issues: write` permission to
 
 ### Option 2: Manual Creation via GitHub UI
 1. Open [ISSUES_TO_CREATE.md](ISSUES_TO_CREATE.md)
-2. For each issue, navigate to https://github.com/nsheaps/github2/issues/new
+2. For each issue, navigate to <https://github.com/nsheaps/github2/issues/new>
 3. Copy the title, description, and apply labels from the document
 
 ### Option 3: Bulk Creation with GitHub CLI
