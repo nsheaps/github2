@@ -162,65 +162,168 @@ def git_commit_and_push(message):
     subprocess.run(['git', 'push'], check=True)
 
 
+def scan_todos_in_code():
+    """Scan codebase for TODO comments and return list of TODO IDs"""
+    import hashlib
+    
+    todo_ids = set()
+    root = Path('.')
+    extensions = {'.py', '.js', '.jsx', '.ts', '.tsx', '.md', '.yml', '.yaml', '.json', '.sh', '.css', '.html'}
+    skip_dirs = {'.git', 'node_modules', '__pycache__', '.venv', 'venv', 'dist', 'build', '.next', '.github'}
+    
+    for filepath in root.rglob('*'):
+        if filepath.is_file() and filepath.suffix in extensions:
+            if any(skip in filepath.parts for skip in skip_dirs):
+                continue
+            
+            try:
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                
+                for i, line in enumerate(lines, 1):
+                    match = re.search(r'(?://|#|<!--|/\*)\s*TODO:?\s*(.+?)(?:-->|\*/)?$', line, re.IGNORECASE)
+                    if match:
+                        text = match.group(1).strip()
+                        todo_id = hashlib.md5(f"{filepath}:{i}:{text}".encode()).hexdigest()[:12]
+                        todo_ids.add(todo_id)
+            except:
+                pass
+    
+    return todo_ids
+
+
 def sync_issues(repo, event_type, changed_files=None):
-    """Main sync logic"""
+    """
+    Main sync logic implementing the full state machine:
+    
+    Code NO, Doc NO, Issue YES  → Close issue
+    Code NO, Doc YES, Issue YES → Sync doc and issue
+    Code NO, Doc YES, Issue NO  → Create issue from doc (normal flow)
+    Code YES, Doc NO, Issue NO  → Already handled by scan-todos.py in PR
+    Code YES, Doc YES, Issue NO → Create issue from doc (normal flow)
+    Code YES, Doc YES, Issue YES → Sync doc and issue
+    """
     print(f"Syncing issues... (event: {event_type})")
+    
+    # Scan for TODOs in code
+    print("Scanning code for TODOs...")
+    code_todo_ids = scan_todos_in_code()
+    print(f"Found {len(code_todo_ids)} TODOs in code")
     
     docs = get_issue_docs()
     github_issues = get_github_issues(repo)
     
-    # Build mapping
+    # Categorize docs
     docs_by_number = {d['number']: d for d in docs if d['number']}
     docs_without_number = [d for d in docs if not d['number']]
+    
+    # Categorize docs by whether they're TODO docs
+    todo_docs = {}  # todo_id -> doc
+    task_docs_by_number = {}  # number -> doc (non-TODO docs)
+    task_docs_without_number = []
+    
+    for doc in docs:
+        # Check if it's a TODO doc (has todo-{id} in filename)
+        match = re.search(r'todo-([a-f0-9]{12})', doc['filename'])
+        if match:
+            todo_id = match.group(1)
+            todo_docs[todo_id] = doc
+        else:
+            if doc['number']:
+                task_docs_by_number[doc['number']] = doc
+            else:
+                task_docs_without_number.append(doc)
+    
     github_by_number = {issue['number']: issue for issue in github_issues}
     
     changes_made = False
     
-    # Handle docs without issue numbers - create issues
-    for doc in docs_without_number:
+    print(f"\nState analysis:")
+    print(f"  Code TODOs: {len(code_todo_ids)}")
+    print(f"  TODO docs: {len(todo_docs)}")
+    print(f"  Task docs with numbers: {len(task_docs_by_number)}")
+    print(f"  Task docs without numbers: {len(task_docs_without_number)}")
+    print(f"  GitHub issues: {len(github_by_number)}")
+    
+    # Handle TODO docs: Code NO, Doc YES cases
+    for todo_id, doc in todo_docs.items():
+        code_exists = todo_id in code_todo_ids
+        issue_exists = doc['number'] and doc['number'] in github_by_number
+        
+        if not code_exists and not issue_exists and doc['number']:
+            # Code NO, Doc YES, Issue NO (with number) - orphaned doc, remove number or delete
+            print(f"TODO removed from code: {doc['filename']} (had issue #{doc['number']}) - keeping doc")
+        elif not code_exists and issue_exists:
+            # Code NO, Doc YES, Issue YES - sync doc and issue
+            print(f"Syncing TODO doc {doc['filename']} with issue #{doc['number']}...")
+            title = doc['frontmatter'].get('title', 'Untitled')
+            labels = doc['frontmatter'].get('labels', [])
+            assignees = doc['frontmatter'].get('assignees', [])
+            update_github_issue(repo, doc['number'], title, doc['body'], labels, assignees)
+        elif code_exists and not issue_exists and not doc['number']:
+            # Code YES, Doc YES, Issue NO (without number) - create issue
+            print(f"Creating issue for TODO doc {doc['filename']}...")
+            title = doc['frontmatter'].get('title', 'Untitled')
+            labels = doc['frontmatter'].get('labels', [])
+            assignees = doc['frontmatter'].get('assignees', [])
+            number = create_github_issue(repo, title, doc['body'], labels, assignees)
+            if number:
+                new_filename = f"{number}-{doc['filename']}"
+                new_path = doc['file'].parent / new_filename
+                git_mv(doc['file'], new_path)
+                changes_made = True
+                print(f"  Created issue #{number}, renamed to {new_filename}")
+        elif code_exists and issue_exists:
+            # Code YES, Doc YES, Issue YES - sync if doc changed
+            if event_type == 'push' and changed_files and str(doc['file']) in changed_files:
+                print(f"Syncing TODO doc {doc['filename']} to issue #{doc['number']}...")
+                title = doc['frontmatter'].get('title', 'Untitled')
+                labels = doc['frontmatter'].get('labels', [])
+                assignees = doc['frontmatter'].get('assignees', [])
+                update_github_issue(repo, doc['number'], title, doc['body'], labels, assignees)
+    
+    # Handle task docs without numbers - create issues
+    for doc in task_docs_without_number:
         title = doc['frontmatter'].get('title', 'Untitled')
         labels = doc['frontmatter'].get('labels', [])
         assignees = doc['frontmatter'].get('assignees', [])
         
-        print(f"Creating issue for {doc['filename']}...")
+        print(f"Creating issue for task doc {doc['filename']}...")
         number = create_github_issue(repo, title, doc['body'], labels, assignees)
         
         if number:
-            # Rename file to include issue number
             new_filename = f"{number}-{doc['filename']}"
             new_path = doc['file'].parent / new_filename
             git_mv(doc['file'], new_path)
             changes_made = True
             print(f"  Created issue #{number}, renamed to {new_filename}")
     
-    # Handle docs with numbers - check if issues exist
-    for number, doc in docs_by_number.items():
+    # Handle task docs with numbers - sync if changed
+    for number, doc in task_docs_by_number.items():
         if number not in github_by_number:
-            # Doc exists but no GitHub issue - do nothing per spec
-            print(f"Doc {doc['filename']} has number but no GitHub issue - skipping")
+            # Doc YES, Issue NO - do nothing per original spec
+            print(f"Task doc {doc['filename']} has number but no GitHub issue - skipping")
             continue
         
-        # Both exist - check if sync needed
-        if event_type == 'push' and changed_files:
-            if str(doc['file']) in changed_files:
-                # Doc was updated, sync to GitHub
-                title = doc['frontmatter'].get('title', 'Untitled')
-                labels = doc['frontmatter'].get('labels', [])
-                assignees = doc['frontmatter'].get('assignees', [])
-                
-                print(f"Syncing doc {doc['filename']} to issue #{number}...")
-                update_github_issue(repo, number, title, doc['body'], labels, assignees)
+        # Doc YES, Issue YES - sync if changed
+        if event_type == 'push' and changed_files and str(doc['file']) in changed_files:
+            print(f"Syncing task doc {doc['filename']} to issue #{number}...")
+            title = doc['frontmatter'].get('title', 'Untitled')
+            labels = doc['frontmatter'].get('labels', [])
+            assignees = doc['frontmatter'].get('assignees', [])
+            update_github_issue(repo, number, title, doc['body'], labels, assignees)
     
-    # Handle GitHub issues without docs - close them
+    # Handle GitHub issues without docs - Code NO, Doc NO, Issue YES → Close
+    all_doc_numbers = set(d['number'] for d in docs if d['number'])
     for number, issue in github_by_number.items():
-        if number not in docs_by_number:
-            print(f"Closing issue #{number} (no matching doc)...")
-            close_github_issue(repo, number)
+        if number not in all_doc_numbers:
+            print(f"Closing issue #{number} (no matching doc - Code NO, Doc NO, Issue YES)...")
+            close_github_issue(repo, number, "Cancelled - no matching documentation found")
     
     if changes_made:
         git_commit_and_push("Sync issues: add issue numbers to docs")
     
-    print("Sync complete!")
+    print("\n✅ Sync complete!")
 
 
 def main():

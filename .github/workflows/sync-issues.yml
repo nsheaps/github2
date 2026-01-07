@@ -7,7 +7,10 @@ on:
     paths:
       - '.github/issues/**'
       - 'sync-issues.py'
+      - 'scan-todos.py'
       - '.github/workflows/sync-issues.yml'
+  pull_request:
+    types: [opened, synchronize, reopened]
   issues:
     types: [opened, edited]
   workflow_dispatch: {}
@@ -17,10 +20,52 @@ permissions:
   issues: write
 
 jobs:
+  scan-todos:
+    name: Scan TODOs in Code
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Scan TODOs and create/update docs
+        run: |
+          python3 scan-todos.py
+      
+      - name: Push changes if any
+        run: |
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git push
+            echo "✅ Pushed TODO doc updates to PR branch"
+          fi
+      
+      - name: Summary
+        run: |
+          {
+            echo "✅ TODO scan complete"
+            echo ""
+            echo "TODOs in code have been synced to \`.github/issues/\` docs"
+            echo ""
+            echo "When this PR is merged to main, docs without issue numbers will automatically get GitHub issues created."
+          } >> $GITHUB_STEP_SUMMARY
+  
   sync:
     name: Sync Issues with Docs
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: "github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip ci]')"
 
     steps:
       - name: Checkout code
