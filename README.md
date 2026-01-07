@@ -2,7 +2,6 @@
 
 A modern, high-performance alternative GitHub UI client built with React, TypeScript, and Vite. GitHub2 provides a faster, more customizable interface for managing your GitHub workflow with advanced features like customizable dashboards, offline support, and cross-device sync.
 
-
 ## Overview
 
 GitHub2 is designed to be a complete reimagining of the GitHub interface with a focus on:
