@@ -1,4 +1,10 @@
-# Setup CI/CD Workflows
+---
+title: Setup CI/CD Workflows
+labels: [ci-cd, github-actions]
+assignees: []
+---
+
+## Setup CI/CD Workflows
 
 ## Task
 Configure GitHub Actions workflows for lint, test, build, and deploy.

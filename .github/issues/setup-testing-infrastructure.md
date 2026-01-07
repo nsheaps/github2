@@ -1,4 +1,10 @@
-# Setup Testing Infrastructure
+---
+title: Setup Testing Infrastructure
+labels: [testing, tooling]
+assignees: []
+---
+
+## Setup Testing Infrastructure
 
 ## Task
 Configure testing framework and write core tests.

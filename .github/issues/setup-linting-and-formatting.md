@@ -1,4 +1,10 @@
-# Setup Linting and Formatting
+---
+title: Setup Linting and Formatting
+labels: [linting, code-quality, tooling]
+assignees: []
+---
+
+## Setup Linting and Formatting
 
 ## Task
 Configure all linters and code formatters for the project.

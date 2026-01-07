@@ -1,4 +1,10 @@
-# Implement URL Mapper Core
+---
+title: Implement URL Mapper Core
+labels: [url-mapping, feature, api]
+assignees: []
+---
+
+## Implement URL Mapper Core
 
 ## Task
 Build core URL mapping functionality with pattern matching and storage.

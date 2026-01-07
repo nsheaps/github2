@@ -1,0 +1,150 @@
+---
+name: Sync Issues
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/issues/**'
+      - 'sync-issues.py'
+      - '.github/workflows/sync-issues.yml'
+  issues:
+    types: [opened, edited]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    name: Sync Issues with Docs
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Create labels if missing
+        uses: crazy-max/ghaction-github-labeler@v5
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Get changed files
+        id: changed-files
+        if: github.event_name == 'push'
+        run: |
+          if [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '^\.github/issues/' || true)
+          else
+            CHANGED=$(git ls-files .github/issues/)
+          fi
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Handle issue event
+        if: github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 << 'PYTHON'
+          import json
+          import os
+          import re
+          from pathlib import Path
+          
+          event_type = "${{ github.event.action }}"
+          issue_number = ${{ github.event.issue.number }}
+          issue_title = """${{ github.event.issue.title }}"""
+          issue_body = """${{ github.event.issue.body }}"""
+          
+          # Get issue labels and assignees via gh
+          import subprocess
+          result = subprocess.run(
+              ["gh", "issue", "view", str(issue_number), "--json", "labels,assignees"],
+              capture_output=True, text=True, check=True
+          )
+          issue_data = json.loads(result.stdout)
+          labels = [l['name'] for l in issue_data.get('labels', [])]
+          assignees = [a['login'] for a in issue_data.get('assignees', [])]
+          
+          # Check if doc exists
+          issues_dir = Path('.github/issues')
+          existing_doc = None
+          for file in issues_dir.glob(f'{issue_number}-*.md'):
+              existing_doc = file
+              break
+          
+          if event_type == 'opened' and not existing_doc:
+              # Create new doc
+              # Generate filename from title
+              slug = re.sub(r'[^a-z0-9]+', '-', issue_title.lower()).strip('-')
+              filename = f'{issue_number}-{slug}.md'
+              filepath = issues_dir / filename
+              
+              labels_str = '[' + ', '.join(labels) + ']' if labels else '[]'
+              assignees_str = '[' + ', '.join(assignees) + ']' if assignees else '[]'
+              
+              content = f"""---
+          title: {issue_title}
+          labels: {labels_str}
+          assignees: {assignees_str}
+          ---
+          
+          {issue_body}
+          """
+              
+              filepath.write_text(content)
+              subprocess.run(['git', 'add', str(filepath)], check=True)
+              subprocess.run(['git', 'commit', '-m', f'Add doc for issue #{issue_number} [skip ci]'], check=True)
+              subprocess.run(['git', 'push'], check=True)
+              print(f'Created doc: {filename}')
+          
+          elif event_type == 'edited' and existing_doc:
+              # Update existing doc
+              labels_str = '[' + ', '.join(labels) + ']' if labels else '[]'
+              assignees_str = '[' + ', '.join(assignees) + ']' if assignees else '[]'
+              
+              content = f"""---
+          title: {issue_title}
+          labels: {labels_str}
+          assignees: {assignees_str}
+          ---
+          
+          {issue_body}
+          """
+              
+              existing_doc.write_text(content)
+              subprocess.run(['git', 'add', str(existing_doc)], check=True)
+              subprocess.run(['git', 'commit', '-m', f'Update doc for issue #{issue_number} [skip ci]'], check=True)
+              subprocess.run(['git', 'push'], check=True)
+              print(f'Updated doc: {existing_doc.name}')
+          PYTHON
+
+      - name: Sync issues (push event)
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          EVENT_TYPE: push
+          CHANGED_FILES: ${{ steps.changed-files.outputs.files }}
+        run: |
+          python3 sync-issues.py
+
+      - name: Summary
+        run: |
+          {
+            echo "✅ Issues synced successfully"
+            echo ""
+            echo "See [Issues](https://github.com/$GITHUB_REPOSITORY/issues)"
+          } >> $GITHUB_STEP_SUMMARY

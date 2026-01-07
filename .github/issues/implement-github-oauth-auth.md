@@ -1,4 +1,10 @@
-# Implement GitHub OAuth Authentication
+---
+title: Implement GitHub OAuth Authentication
+labels: [authentication, oauth, feature]
+assignees: []
+---
+
+## Implement GitHub OAuth Authentication
 
 ## Task
 Complete GitHub OAuth authentication flow with token management.

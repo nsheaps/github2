@@ -1,4 +1,10 @@
-# Setup React App Foundation
+---
+title: Setup React App Foundation
+labels: [core, setup, react]
+assignees: []
+---
+
+## Setup React App Foundation
 
 ## Task
 Initialize React SPA with TypeScript, Vite configuration, and base routing.

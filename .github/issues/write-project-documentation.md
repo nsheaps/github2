@@ -1,4 +1,10 @@
-# Write Project Documentation
+---
+title: Write Project Documentation
+labels: [documentation]
+assignees: []
+---
+
+## Write Project Documentation
 
 ## Task
 Create comprehensive project documentation.

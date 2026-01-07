@@ -1,4 +1,10 @@
-# Build Rate Limit Viewer
+---
+title: Build Rate Limit Viewer
+labels: [feature, ui, api, rate-limit]
+assignees: []
+---
+
+## Build Rate Limit Viewer
 
 ## Task
 Create rate limit viewer with API service, control panel, and real-time visualization.
