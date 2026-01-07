@@ -1,5 +1,21 @@
 # GitHub2 - Copilot Coding Agent Instructions
 
+<CRITICAL>
+After completing any task, you MUST review what you did, summarize any learnings, and update any relevant AI documentation in the following paths:
+- `.claude/rules/`
+` `.claude/settings.json`
+- `.mcp.json`
+- `**/*/AGENTS.md`
+- `**/*/CLAUDE.md`
+- `.github/copilot-instructions.md`
+- `.github/instructions/*.instructions.md`
+
+Failure to do so will result in repetitive mistakes and inefficiencies in future tasks.
+Don't forget to push the changes to those files after committing the changes to the rules.
+</CRITICAL>
+
+After completing any task, re-read this file to refresh your memory on the project guidelines and best practices.
+
 ## Repository Overview
 
 **GitHub2** is a modern, high-performance alternative GitHub UI client built with React, TypeScript, and Vite. It provides a faster, more customizable interface for managing GitHub workflows with features like customizable dashboards, real-time rate limit monitoring, and advanced charting.
