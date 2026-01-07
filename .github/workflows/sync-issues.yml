@@ -9,6 +9,14 @@ on:
       - 'sync-issues.py'
       - 'scan-todos.py'
       - '.github/workflows/sync-issues.yml'
+      - '**/*.py'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.md'
+      - '**/*.yml'
+      - '**/*.yaml'
   pull_request:
     types: [opened, synchronize, reopened]
   issues:
@@ -18,6 +26,10 @@ on:
 permissions:
   contents: write
   issues: write
+
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('sync-issues-pr-{0}', github.event.pull_request.number) || format('sync-issues-main-{0}', github.sha) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   scan-todos:

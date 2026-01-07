@@ -192,6 +192,41 @@ def scan_todos_in_code():
     return todo_ids
 
 
+def scan_todos_in_code_detailed():
+    """Scan codebase for TODO comments and return detailed list"""
+    import hashlib
+    
+    todos = []
+    root = Path('.')
+    extensions = {'.py', '.js', '.jsx', '.ts', '.tsx', '.md', '.yml', '.yaml', '.json', '.sh', '.css', '.html'}
+    skip_dirs = {'.git', 'node_modules', '__pycache__', '.venv', 'venv', 'dist', 'build', '.next', '.github'}
+    
+    for filepath in root.rglob('*'):
+        if filepath.is_file() and filepath.suffix in extensions:
+            if any(skip in filepath.parts for skip in skip_dirs):
+                continue
+            
+            try:
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                
+                for i, line in enumerate(lines, 1):
+                    match = re.search(r'(?://|#|<!--|/\*)\s*TODO:?\s*(.+?)(?:-->|\*/)?$', line, re.IGNORECASE)
+                    if match:
+                        text = match.group(1).strip()
+                        todo_id = hashlib.md5(f"{filepath}:{i}:{text}".encode()).hexdigest()[:12]
+                        todos.append({
+                            'id': todo_id,
+                            'file': str(filepath),
+                            'line': i,
+                            'text': text
+                        })
+            except:
+                pass
+    
+    return todos
+
+
 def sync_issues(repo, event_type, changed_files=None):
     """
     Main sync logic implementing the full state machine:
@@ -199,7 +234,7 @@ def sync_issues(repo, event_type, changed_files=None):
     Code NO, Doc NO, Issue YES  → Close issue
     Code NO, Doc YES, Issue YES → Sync doc and issue
     Code NO, Doc YES, Issue NO  → Create issue from doc (normal flow)
-    Code YES, Doc NO, Issue NO  → Already handled by scan-todos.py in PR
+    Code YES, Doc NO, Issue NO  → Create doc from code, then create issue
     Code YES, Doc YES, Issue NO → Create issue from doc (normal flow)
     Code YES, Doc YES, Issue YES → Sync doc and issue
     """
@@ -207,7 +242,8 @@ def sync_issues(repo, event_type, changed_files=None):
     
     # Scan for TODOs in code
     print("Scanning code for TODOs...")
-    code_todo_ids = scan_todos_in_code()
+    code_todos = scan_todos_in_code_detailed()
+    code_todo_ids = set(todo['id'] for todo in code_todos)
     print(f"Found {len(code_todo_ids)} TODOs in code")
     
     docs = get_issue_docs()
@@ -237,6 +273,7 @@ def sync_issues(repo, event_type, changed_files=None):
     github_by_number = {issue['number']: issue for issue in github_issues}
     
     changes_made = False
+    docs_to_create = []  # Collect doc creation operations to push last
     
     print(f"\nState analysis:")
     print(f"  Code TODOs: {len(code_todo_ids)}")
@@ -244,6 +281,72 @@ def sync_issues(repo, event_type, changed_files=None):
     print(f"  Task docs with numbers: {len(task_docs_by_number)}")
     print(f"  Task docs without numbers: {len(task_docs_without_number)}")
     print(f"  GitHub issues: {len(github_by_number)}")
+    
+    # First pass: Handle Code YES, Doc NO, Issue NO - create docs
+    for todo in code_todos:
+        todo_id = todo['id']
+        if todo_id not in todo_docs:
+            # Code YES, Doc NO, Issue NO - create doc
+            print(f"Creating doc for TODO in code: {todo['text'][:50]}...")
+            
+            # Generate doc
+            slug = re.sub(r'[^a-z0-9]+', '-', todo['text'].lower())[:50].strip('-')
+            filename = f"todo-{todo_id}-{slug}.md"
+            
+            # Determine labels
+            labels = ['todo']
+            if '.py' in todo['file']:
+                labels.append('python')
+            elif any(ext in todo['file'] for ext in ['.js', '.jsx', '.ts', '.tsx']):
+                labels.append('javascript')
+            
+            source_link = f"{todo['file']}#L{todo['line']}"
+            frontmatter = create_frontmatter(
+                title=todo['text'][:100],
+                labels=labels,
+                assignees=[]
+            )
+            
+            content = f"""{frontmatter}
+
+## TODO from Code
+
+{todo['text']}
+
+**Source**: `{source_link}`
+
+## Context
+
+This TODO was found in the codebase and needs to be addressed.
+"""
+            
+            docs_to_create.append({
+                'filename': filename,
+                'content': content,
+                'todo_id': todo_id
+            })
+    
+    # Create the docs for Code YES, Doc NO, Issue NO
+    for doc_info in docs_to_create:
+        filepath = Path('.github/issues') / doc_info['filename']
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        with open(filepath, 'w') as f:
+            f.write(doc_info['content'])
+        git_add(filepath)
+        print(f"  Created doc: {doc_info['filename']}")
+        
+        # Add to todo_docs so subsequent logic can process it
+        todo_docs[doc_info['todo_id']] = {
+            'file': filepath,
+            'filename': doc_info['filename'],
+            'number': None,
+            'frontmatter': parse_frontmatter(doc_info['content'])[0],
+            'body': parse_frontmatter(doc_info['content'])[1],
+            'full_content': doc_info['content']
+        }
+    
+    if docs_to_create:
+        changes_made = True
     
     # Handle TODO docs: Code NO, Doc YES cases
     for todo_id, doc in todo_docs.items():
@@ -320,8 +423,19 @@ def sync_issues(repo, event_type, changed_files=None):
             print(f"Closing issue #{number} (no matching doc - Code NO, Doc NO, Issue YES)...")
             close_github_issue(repo, number, "Cancelled - no matching documentation found")
     
+    # Commit and push all changes in the right order
+    # First commit any doc creations (Code YES, Doc NO -> Doc created)
+    # Then commit any file renames (issue number additions)
+    # This ensures push doesn't trigger duplicate logic
     if changes_made:
-        git_commit_and_push("Sync issues: add issue numbers to docs")
+        try:
+            # Check if there are any staged changes
+            result = subprocess.run(['git', 'diff', '--cached', '--quiet'], capture_output=True)
+            if result.returncode != 0:  # There are staged changes
+                git_commit_and_push("Sync issues: create docs and add issue numbers")
+        except subprocess.CalledProcessError:
+            # Commit might fail if no changes, that's ok
+            pass
     
     print("\n✅ Sync complete!")
 
