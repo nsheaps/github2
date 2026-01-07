@@ -1,90 +1,109 @@
-# GitHub Issues Creation Guide
+# GitHub Issues Sync Guide
 
-This repository contains prepared materials for creating GitHub issues based on all TODOs and future work items from the recently merged PR #2.
+This repository contains automated tooling to sync GitHub issues from TODOs and future work items documented in the codebase.
 
 ## What's Included
 
 ### 1. ISSUES_TO_CREATE.md
+
 A comprehensive markdown document containing all 85 issues with:
+
 - Detailed descriptions of what needs to be done
 - Permalinks to exact line numbers in source documentation (commit 5e98118)
 - Suggested labels for categorization
 - Organized by source file/category
 
-### 2. create-issues.sh
-A bash script that can be used to bulk-create all 85 issues using the GitHub CLI (`gh`).
+### 2. sync-issues.py
 
-The script supports both interactive mode (when run manually) and non-interactive mode (when run in CI).
+A Python script that syncs issues from ISSUES_TO_CREATE.md to GitHub:
 
-### 3. .github/workflows/create-issues.yml
-A GitHub Actions workflow that automatically creates all issues when a PR is opened to the main branch. The workflow can also be triggered manually via `workflow_dispatch`.
+- Uses hash-based deduplication to prevent duplicates
+- Creates missing issues
+- Closes duplicate issues (keeps one open per TODO)
+- Each issue contains an HTML comment with a unique sync hash
+
+### 3. .github/workflows/sync-issues.yml
+
+A GitHub Actions workflow that automatically syncs issues when:
+
+- Changes are pushed to `main` branch affecting ISSUES_TO_CREATE.md
+- The workflow can be manually triggered via `workflow_dispatch`
 
 **Important**: This script requires GitHub CLI authentication and appropriate repository permissions.
 
-## How to Create the Issues
+## How Issues Are Synced
 
-### Option 1: Automatic Creation via GitHub Actions (Recommended)
+### Automatic Sync via GitHub Actions (Recommended)
 
-When you open a PR to the `main` branch, the `.github/workflows/create-issues.yml` workflow will automatically run and create all 85 issues.
+When changes to `ISSUES_TO_CREATE.md` are pushed to the `main` branch, the workflow automatically:
+
+1. Parses all TODO items from ISSUES_TO_CREATE.md
+2. Generates a unique hash for each item based on title + source
+3. Checks for existing issues with matching hashes (in HTML comments)
+4. Creates missing issues with the sync hash in an HTML comment
+5. Closes duplicate issues (keeps one open per TODO)
 
 Alternatively, you can trigger the workflow manually:
+
 1. Go to the [Actions tab](https://github.com/nsheaps/github2/actions)
-2. Select "Create Issues from TODOs" workflow
+2. Select "Sync Issues from TODOs" workflow
 3. Click "Run workflow"
 4. Select the branch and click "Run workflow"
 
-The workflow uses the built-in `GITHUB_TOKEN` with `issues: write` permission to create the issues.
+The workflow uses the built-in `GITHUB_TOKEN` with `issues: write` permission.
 
-### Option 2: Manual Creation via GitHub UI
-1. Open [ISSUES_TO_CREATE.md](ISSUES_TO_CREATE.md)
-2. For each issue, navigate to <https://github.com/nsheaps/github2/issues/new>
-3. Copy the title, description, and apply labels from the document
+### Manual Sync with Python Script
 
-### Option 3: Bulk Creation with GitHub CLI
 If you have the GitHub CLI installed and authenticated:
 
 ```bash
 # Ensure you're authenticated
 gh auth login
 
-# Run the script from the repository root
-./create-issues.sh
+# Run the sync script from the repository root
+python3 sync-issues.py
 ```
 
-**Note**: The script will prompt for confirmation before creating issues.
+### Manual Creation via GitHub UI
 
-### Option 3: Using GitHub API
-You can also use the GitHub API directly with a personal access token. Here's an example:
+1. Open [ISSUES_TO_CREATE.md](ISSUES_TO_CREATE.md)
+2. For each issue, navigate to <https://github.com/nsheaps/github2/issues/new>
+3. Copy the title, description, and apply labels from the document
+4. **Important**: Add the sync hash HTML comment to prevent duplicates:
+   `<!-- sync-hash: [hash-from-title-and-source] -->`
 
-```bash
-curl -X POST \
-  -H "Authorization: token YOUR_TOKEN" \
-  -H "Accept: application/vnd.github.v3+json" \
-  https://api.github.com/repos/nsheaps/github2/issues \
-  -d '{
-    "title": "Issue Title",
-    "body": "Issue Description",
-    "labels": ["label1", "label2"]
-  }'
-```
+## Deduplication System
+
+Each TODO item has a unique hash generated from its title and source URL. This hash is:
+
+- Stored in an HTML comment in the issue body: `<!-- sync-hash: abc123... -->`
+- Used to identify and prevent duplicate issues
+- Allows the sync script to maintain exactly one issue per TODO
+
+When duplicates are detected:
+
+- One issue is kept open
+- Other duplicates are automatically closed with a comment
 
 ## Issue Categories
 
-The 85 issues are categorized as follows:
-
-- **Core Application**: 4 issues (React setup, Vite config, routing)
-- **Authentication**: 5 issues (OAuth, login, token management)
-- **Rate Limit Viewer**: 5 issues (API service, UI components, charting)
-- **Linting & Code Quality**: 6 issues (ESLint, Prettier, markdownlint, YAML, JSON)
-- **Testing**: 12 issues (Vitest, React Testing Library, test suites)
-- **Documentation**: 6 issues (README, setup guides, API docs)
-- **CI/CD**: 14 issues (workflows, deployment, GitHub Pages)
-- **URL Mapping/Redirects**: 14 issues (URLMapper, hooks, browser extension)
-- **Future Enhancements**: 19 issues (E2E testing, performance, security, AI tools)
+| Category | Count | Examples |
+|----------|-------|----------|
+| Core Application | 4 | React setup, Vite config, routing |
+| Authentication | 5 | OAuth, login, token management |
+| Rate Limit Viewer | 5 | API service, UI components, charting |
+| Linting & Code Quality | 6 | ESLint, Prettier, markdownlint |
+| Testing | 12 | Vitest, React Testing Library, various test types |
+| Documentation | 6 | README, setup guides, API docs |
+| CI/CD | 14 | Workflows, deployment, GitHub Pages |
+| URL Mapping/Redirects | 14 | URLMapper, hooks, browser extension |
+| Future Enhancements | 19 | E2E testing, performance, security, AI tools |
+| **TOTAL** | **85** | |
 
 ## Labels Used
 
 The following labels are used across the issues:
+
 - **Type**: feature, enhancement, decision
 - **Area**: ui, api, extension, documentation, testing
 - **Technology**: react, oauth, css, git
@@ -94,6 +113,7 @@ The following labels are used across the issues:
 ## Source Documentation
 
 All issues reference documentation from the merged PR #2 (commit 5e98118):
+
 - `TODO.md` - Main TODO checklist
 - `docs/specs/url-redirects/SPEC.md` - URL redirection specification
 - `docs/principles/testing.md` - Testing principles and future enhancements
@@ -104,10 +124,11 @@ All issues reference documentation from the merged PR #2 (commit 5e98118):
 ## Notes
 
 - Each issue describes **what** needs to be done, not **how** to implement it
-- All permalinks point to specific line numbers in the codebase
+- Issues are designed to be actionable and clear
 - Labels are suggestions and can be adjusted based on repository label conventions
-- Some issues may be dependent on others (e.g., browser extension issues depend on URL mapping completion)
-- Issues marked as "future" or "enhancement" are lower priority and can be addressed after core functionality
+- Some issues may be dependent on others (documented in descriptions where relevant)
+- Issues marked as "future" or "enhancement" are lower priority
+- The sync system ensures no duplicate issues are created
 
 ## Questions?
 

@@ -1,0 +1,49 @@
+---
+name: Sync Issues from TODOs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ISSUES_TO_CREATE.md'
+      - 'sync-issues.py'
+      - '.github/workflows/sync-issues.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync-issues:
+    name: Sync GitHub Issues
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Create labels if missing
+        uses: crazy-max/ghaction-github-labeler@v5
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Sync issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 sync-issues.py
+
+      - name: Summary
+        run: |
+          {
+            echo "✅ Successfully synced GitHub issues from TODOs"
+            echo ""
+            echo "See [Issues](https://github.com/$GITHUB_REPOSITORY/issues)"
+          } >> $GITHUB_STEP_SUMMARY
