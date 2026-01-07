@@ -18,6 +18,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create labels if missing
+        uses: crazy-max/ghaction-github-labeler@v5
+        with:
+          github-token: ${{ github.token }}
+          yaml-file: false
+          skip-delete: true
+
       - name: Setup GitHub CLI
         run: |
           # GitHub CLI is pre-installed on GitHub Actions runners
