@@ -41,7 +41,7 @@ runs:
       shell: bash
       working-directory: ${{ github.workspace }}
       run: |
-        npx tsx ${{ github.action_path }}/../../src/scan-todos/index.ts
+        npx tsx ${{ github.action_path }}/src/scan-todos/index.ts
     
     - name: Run issue sync
       if: inputs.mode == 'sync-issues'
@@ -53,4 +53,4 @@ runs:
         EVENT_TYPE: ${{ inputs.event-type }}
         CHANGED_FILES: ${{ inputs.changed-files }}
       run: |
-        npx tsx ${{ github.action_path }}/../../src/sync-issues/index.ts
+        npx tsx ${{ github.action_path }}/src/sync-issues/index.ts

@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "yarn@4.6.0",
+  "workspaces": [
+    ".",
+    ".github"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -15,7 +20,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:all": "nx run-many --target=test --all"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -46,6 +52,7 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
     "vitest": "^4.0.16",
-    "yaml-lint": "^1.7.0"
+    "yaml-lint": "^1.7.0",
+    "nx": "^21.0.0"
   }
 }
