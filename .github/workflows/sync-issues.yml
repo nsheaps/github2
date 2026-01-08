@@ -6,8 +6,8 @@ on:
     branches: [main]
     paths:
       - '.github/issues/**'
-      - 'sync-issues.py'
-      - 'scan-todos.py'
+      - '.github/src/**'
+      - '.github/actions/**'
       - '.github/workflows/sync-issues.yml'
       - '**/*.py'
       - '**/*.js'
@@ -44,22 +44,22 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      
-      - name: Scan TODOs and create/update docs
+      - name: Configure git
         run: |
-          python3 scan-todos.py
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Scan and sync TODOs
+        uses: ./.github/actions/persist-github-issues-to-files
+        with:
+          mode: 'scan-todos'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Push changes if any
         run: |
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
             git push
             echo "✅ Pushed TODO doc updates to PR branch"
           fi
@@ -85,10 +85,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create labels if missing
         uses: crazy-max/ghaction-github-labeler@v5
@@ -108,95 +108,84 @@ jobs:
           echo "$CHANGED" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Handle issue event
+      - name: Handle issue event (created/edited)
         if: github.event_name == 'issues'
         env:
           GH_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          python3 << 'PYTHON'
-          import json
-          import os
-          import re
-          from pathlib import Path
+          # Install dependencies for TypeScript
+          npm install --include=dev
           
-          event_type = "${{ github.event.action }}"
-          issue_number = ${{ github.event.issue.number }}
-          issue_title = """${{ github.event.issue.title }}"""
-          issue_body = """${{ github.event.issue.body }}"""
+          # Use Node script to handle issue events
+          node << 'SCRIPT'
+          const { execSync } = require('child_process');
+          const fs = require('fs');
+          const path = require('path');
+          const yaml = require('js-yaml');
           
-          # Get issue labels and assignees via gh
-          import subprocess
-          result = subprocess.run(
-              ["gh", "issue", "view", str(issue_number), "--json", "labels,assignees"],
-              capture_output=True, text=True, check=True
-          )
-          issue_data = json.loads(result.stdout)
-          labels = [l['name'] for l in issue_data.get('labels', [])]
-          assignees = [a['login'] for a in issue_data.get('assignees', [])]
+          const eventType = process.env.GITHUB_EVENT_PATH ? 
+            JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).action : 
+            'opened';
+          const issue = process.env.GITHUB_EVENT_PATH ?
+            JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).issue :
+            null;
           
-          # Check if doc exists
-          issues_dir = Path('.github/issues')
-          existing_doc = None
-          for file in issues_dir.glob(f'{issue_number}-*.md'):
-              existing_doc = file
-              break
+          if (!issue) {
+            console.log('No issue data found');
+            process.exit(0);
+          }
           
-          if event_type == 'opened' and not existing_doc:
-              # Create new doc
-              # Generate filename from title
-              slug = re.sub(r'[^a-z0-9]+', '-', issue_title.lower()).strip('-')
-              filename = f'{issue_number}-{slug}.md'
-              filepath = issues_dir / filename
-              
-              labels_str = '[' + ', '.join(labels) + ']' if labels else '[]'
-              assignees_str = '[' + ', '.join(assignees) + ']' if assignees else '[]'
-              
-              content = f"""---
-          title: {issue_title}
-          labels: {labels_str}
-          assignees: {assignees_str}
-          ---
+          const issueNumber = issue.number;
+          const issueTitle = issue.title;
+          const issueBody = issue.body || '';
           
-          {issue_body}
-          """
-              
-              filepath.write_text(content)
-              subprocess.run(['git', 'add', str(filepath)], check=True)
-              subprocess.run(['git', 'commit', '-m', f'Add doc for issue #{issue_number} [skip ci]'], check=True)
-              subprocess.run(['git', 'push'], check=True)
-              print(f'Created doc: {filename}')
+          // Get labels and assignees
+          const result = execSync(`gh issue view ${issueNumber} --json labels,assignees`, { encoding: 'utf8' });
+          const issueData = JSON.parse(result);
+          const labels = issueData.labels.map(l => l.name);
+          const assignees = issueData.assignees.map(a => a.login);
           
-          elif event_type == 'edited' and existing_doc:
-              # Update existing doc
-              labels_str = '[' + ', '.join(labels) + ']' if labels else '[]'
-              assignees_str = '[' + ', '.join(assignees) + ']' if assignees else '[]'
-              
-              content = f"""---
-          title: {issue_title}
-          labels: {labels_str}
-          assignees: {assignees_str}
-          ---
+          const issuesDir = '.github/issues';
+          const existingFiles = fs.readdirSync(issuesDir).filter(f => f.startsWith(`${issueNumber}-`));
           
-          {issue_body}
-          """
-              
-              existing_doc.write_text(content)
-              subprocess.run(['git', 'add', str(existing_doc)], check=True)
-              subprocess.run(['git', 'commit', '-m', f'Update doc for issue #{issue_number} [skip ci]'], check=True)
-              subprocess.run(['git', 'push'], check=True)
-              print(f'Updated doc: {existing_doc.name}')
-          PYTHON
+          if (eventType === 'opened' && existingFiles.length === 0) {
+            // Create new doc
+            const slug = issueTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const filename = `${issueNumber}-${slug}.md`;
+            const filepath = path.join(issuesDir, filename);
+            
+            const frontmatter = yaml.dump({ title: issueTitle, labels, assignees });
+            const content = `---\n${frontmatter.trim()}\n---\n\n${issueBody}\n`;
+            
+            fs.writeFileSync(filepath, content);
+            execSync(`git add "${filepath}"`);
+            execSync(`git commit -m "Add doc for issue #${issueNumber} [skip ci]"`);
+            execSync('git push');
+            console.log(`Created doc: ${filename}`);
+          } else if (eventType === 'edited' && existingFiles.length > 0) {
+            // Update existing doc
+            const filepath = path.join(issuesDir, existingFiles[0]);
+            
+            const frontmatter = yaml.dump({ title: issueTitle, labels, assignees });
+            const content = `---\n${frontmatter.trim()}\n---\n\n${issueBody}\n`;
+            
+            fs.writeFileSync(filepath, content);
+            execSync(`git add "${filepath}"`);
+            execSync(`git commit -m "Update doc for issue #${issueNumber} [skip ci]"`);
+            execSync('git push');
+            console.log(`Updated doc: ${existingFiles[0]}`);
+          }
+          SCRIPT
 
       - name: Sync issues (push event)
         if: github.event_name == 'push'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          EVENT_TYPE: push
-          CHANGED_FILES: ${{ steps.changed-files.outputs.files }}
-        run: |
-          python3 sync-issues.py
+        uses: ./.github/actions/persist-github-issues-to-files
+        with:
+          mode: 'sync-issues'
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          event-type: 'push'
+          changed-files: ${{ steps.changed-files.outputs.files }}
 
       - name: Summary
         run: |
