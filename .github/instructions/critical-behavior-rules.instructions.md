@@ -100,3 +100,13 @@ This trigger applies to ANY action, not just CI checks - it's a general signal t
 - If status="in_progress" → CI running, intelligent wait if needed
 - If status="queued" → CI not started, brief wait then recheck
 
+### Lesson 3: Writing Tests Before Implementations (2026-01-10)
+**Mistake**: Created comprehensive test suite (47 tests) but didn't implement matching functions
+**Root cause**: Wrote tests as specifications but didn't verify implementations matched test expectations
+**Fix**: Either implement functions to match tests OR remove aspirational tests
+**Prevention**:
+- When writing tests, immediately verify the implementation exists and matches
+- Run tests locally BEFORE committing
+- Don't write comprehensive test suites for functions that don't exist yet
+- If scaffolding tests, clearly mark them as TODOs and skip them
+

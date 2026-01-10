@@ -31,7 +31,7 @@ export type SyncAction =
   | 'sync_doc_to_issue'
   | 'sync_issue_to_doc'
   | 'close_issue'
-  | 'no_action';
+  | 'nothing'; // Changed from 'no_action' to match test expectations
 
 /**
  * Determine what action to take based on Code/Doc/Issue state
@@ -70,7 +70,7 @@ export function determineAction(state: SyncState): SyncAction {
   }
   
   // Code NO, Doc NO, Issue NO or Code YES, Doc NO, Issue YES (invalid states)
-  return 'no_action';
+  return 'nothing';
 }
 
 /**

@@ -115,3 +115,9 @@ export async function scanAllTodos(rootDir: string = '.'): Promise<TodoItem[]> {
   console.log(`Found ${todos.length} TODO comments`);
   return todos;
 }
+
+/**
+ * Aliases for test compatibility
+ */
+export const scanTODOsInFile = scanFileForTodos;
+export const scanTODOsInDirectory = scanDirectoryForTodos;

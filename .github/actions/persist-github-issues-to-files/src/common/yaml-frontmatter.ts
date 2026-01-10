@@ -66,3 +66,8 @@ export function createMarkdownWithFrontmatter(
 ): string {
   return `${createFrontmatter(frontmatter)}\n\n${body.trim()}\n`;
 }
+
+/**
+ * Alias for createMarkdownWithFrontmatter (for test compatibility)
+ */
+export const serializeFrontmatter = createMarkdownWithFrontmatter;
