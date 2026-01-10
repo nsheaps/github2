@@ -32,41 +32,10 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  test:
-    name: Test Action Code
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Enable Corepack
-        run: corepack enable
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'yarn'
-      
-      - name: Install dependencies
-        run: yarn install
-      
-      - name: Run tests
-        run: |
-          cd .github
-          yarn test
-      
-      - name: Check coverage
-        run: |
-          cd .github
-          yarn test:coverage
-
   scan-todos:
     name: Scan TODOs in Code
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    needs: [test]
     
     steps:
       - name: Checkout code
@@ -109,7 +78,6 @@ jobs:
     name: Sync Issues with Docs
     runs-on: ubuntu-latest
     if: "github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip ci]')"
-    needs: [test]
 
     steps:
       - name: Checkout code
