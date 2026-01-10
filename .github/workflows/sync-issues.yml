@@ -32,67 +32,16 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  scan-todos:
-    name: Scan TODOs in Code
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      
-      - name: Enable Corepack and Install Yarn
-        run: |
-          corepack enable
-          corepack install
-      
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      
-      - name: Scan and sync TODOs
-        uses: ./.github/actions/persist-github-issues-to-files
-        with:
-          mode: 'scan-todos'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Push changes if any
-        run: |
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git push
-            echo "✅ Pushed TODO doc updates to PR branch"
-          fi
-      
-      - name: Summary
-        run: |
-          {
-            echo "✅ TODO scan complete"
-            echo ""
-            echo "TODOs in code have been synced to \`.github/issues/\` docs"
-            echo ""
-            echo "When this PR is merged to main, docs without issue numbers will automatically get GitHub issues created."
-          } >> $GITHUB_STEP_SUMMARY
-  
   sync:
-    name: Sync Issues with Docs
+    name: Sync Issues
     runs-on: ubuntu-latest
-    if: "github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip ci]')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
@@ -111,11 +60,19 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create labels if missing
+        if: github.event_name != 'pull_request'
         uses: crazy-max/ghaction-github-labeler@v5
         with:
           github-token: ${{ github.token }}
 
-      - name: Get changed files
+      - name: Scan TODOs in code (PR only)
+        if: github.event_name == 'pull_request'
+        uses: ./.github/actions/persist-github-issues-to-files
+        with:
+          mode: 'scan-todos'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get changed files (push only)
         id: changed-files
         if: github.event_name == 'push'
         run: |
@@ -197,7 +154,7 @@ jobs:
           }
           SCRIPT
 
-      - name: Sync issues (push event)
+      - name: Sync issues with docs (push only)
         if: github.event_name == 'push'
         uses: ./.github/actions/persist-github-issues-to-files
         with:
@@ -207,10 +164,27 @@ jobs:
           event-type: 'push'
           changed-files: ${{ steps.changed-files.outputs.files }}
 
+      - name: Push changes if any
+        run: |
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git push
+            echo "✅ Pushed updates"
+          fi
+
       - name: Summary
         run: |
           {
-            echo "✅ Issues synced successfully"
-            echo ""
-            echo "See [Issues](https://github.com/$GITHUB_REPOSITORY/issues)"
+            if [ "${{ github.event_name }}" == "pull_request" ]; then
+              echo "✅ TODO scan complete"
+              echo ""
+              echo "TODOs in code have been synced to \`.github/issues/\` docs"
+              echo ""
+              echo "When this PR is merged to main, docs without issue numbers will automatically get GitHub issues created."
+            else
+              echo "✅ Issues synced successfully"
+              echo ""
+              echo "See [Issues](https://github.com/$GITHUB_REPOSITORY/issues)"
+            fi
           } >> $GITHUB_STEP_SUMMARY
