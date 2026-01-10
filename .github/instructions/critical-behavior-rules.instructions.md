@@ -34,6 +34,19 @@ This trigger applies to ANY action, not just CI checks - it's a general signal t
 
 ## CI Status Checking - Specific Rules
 
+**CRITICAL:** Checking CI status always comes AFTER these tasks (in priority order):
+
+- Investigating and planning your task at hand
+- Making changes related to your task
+- Committing and pushing those changes -- your session might die at any time
+- Reviewing your changes with a critical, staff engineering level mindset (consider the behaviors staff engineers exhibit and the things they look for in a review)
+- Addressing any self-feedback from the review, committing and pushing those
+- Validating your changes, both manually and with test automation (which should also run in CI)
+- Fixing anything found from validation, pushing those as well
+- ...
+- Making sure what you thing CI will test actually passes locally
+- ONLY THEN should you check CI status.
+
 **NEVER blindly wait for CI to start or complete.** Always check status first.
 
 **Correct CI checking workflow:**
