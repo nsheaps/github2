@@ -18,6 +18,61 @@ export interface SyncResult {
   warnings: string[];
 }
 
+export interface SyncState {
+  codeHasTODO: boolean;
+  docExists: boolean;
+  issueExists: boolean;
+}
+
+export type SyncAction = 
+  | 'create_doc_and_issue'
+  | 'create_issue'
+  | 'create_doc'
+  | 'sync_doc_to_issue'
+  | 'sync_issue_to_doc'
+  | 'close_issue'
+  | 'no_action';
+
+/**
+ * Determine what action to take based on Code/Doc/Issue state
+ */
+export function determineAction(state: SyncState): SyncAction {
+  const { codeHasTODO, docExists, issueExists } = state;
+  
+  // Code YES, Doc NO, Issue NO
+  if (codeHasTODO && !docExists && !issueExists) {
+    return 'create_doc_and_issue';
+  }
+  
+  // Code YES, Doc YES, Issue NO
+  if (codeHasTODO && docExists && !issueExists) {
+    return 'create_issue';
+  }
+  
+  // Code YES, Doc YES, Issue YES
+  if (codeHasTODO && docExists && issueExists) {
+    return 'sync_doc_to_issue';
+  }
+  
+  // Code NO, Doc YES, Issue NO
+  if (!codeHasTODO && docExists && !issueExists) {
+    return 'create_issue';
+  }
+  
+  // Code NO, Doc YES, Issue YES
+  if (!codeHasTODO && docExists && issueExists) {
+    return 'sync_doc_to_issue';
+  }
+  
+  // Code NO, Doc NO, Issue YES
+  if (!codeHasTODO && !docExists && issueExists) {
+    return 'close_issue';
+  }
+  
+  // Code NO, Doc NO, Issue NO or Code YES, Doc NO, Issue YES (invalid states)
+  return 'no_action';
+}
+
 /**
  * Check if issue was modified more recently than doc
  */
