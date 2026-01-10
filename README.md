@@ -180,7 +180,7 @@ Comprehensive documentation is available in the `/docs` directory:
 - [Specifications](./docs/specs/) - Feature specifications
 - [Deployment](./docs/DEPLOYMENT.md) - Deployment instructions
 
-## Contributing
+## Contributing 🤝
 
 Contributions are welcome! Please follow these steps:
 
