@@ -18,11 +18,21 @@ This document contains all project requirements, conventions, and technical deci
 - Security and quality requirements
 - Development workflow and CI monitoring
 
+## Critical Behavior Instructions
+
+**MUST READ FIRST**: `.github/instructions/critical-behavior-rules.instructions.md`
+
+This file contains CRITICAL INSTRUCTIONS including:
+- **"WTF dude" trigger** - Stop, fix approach, update rules
+- **Repetitive action detection** - Stop after 5+ identical actions
+- **CI status checking rules** - Never blindly wait, check status first
+- **Information gathering best practices**
+
 ## Critical Requirements Summary
 
 ### Always Remember
 1. **Use Yarn 4 via Corepack** - NEVER use npm, NEVER use `cache: 'yarn'` before `corepack enable`
-2. **Check CI incrementally** - Wait 10s → 20s → 30s → 30s → 30s (never longer than 30s at once)
+2. **Check CI status FIRST** - Don't wait blindly. Check if CI is pending/running/completed before waiting
 3. **Keep files under 500 lines** - Break into modules if exceeded
 4. **Test all action code** - Target >90% coverage
 5. **Document as requested** - Only what's explicitly asked for
