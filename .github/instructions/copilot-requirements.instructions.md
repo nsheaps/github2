@@ -34,8 +34,10 @@ This file contains CRITICAL INSTRUCTIONS including:
 1. **Use Yarn 4 via Corepack** - NEVER use npm, NEVER use `cache: 'yarn'` before `corepack enable`
 2. **Check CI status FIRST** - Don't wait blindly. Check if CI is pending/running/completed before waiting
 3. **Keep files under 500 lines** - Break into modules if exceeded
-4. **Test all action code** - Target >90% coverage
-5. **Document as requested** - Only what's explicitly asked for
+4. **Use modular architecture** - Separate functions logically into libraries/modules (common/, scan-todos/, sync-issues/, etc.)
+5. **Use existing libraries** - Don't reinvent the wheel. Use well-maintained libraries like `gray-matter` for frontmatter parsing
+6. **Test all code** - Target >70% coverage minimum
+7. **Document as requested** - Only what's explicitly asked for
 
 ### Before Making Changes
 - Read `/docs/specs/project-requirements.md` thoroughly
