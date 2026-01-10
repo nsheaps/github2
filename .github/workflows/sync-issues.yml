@@ -1,5 +1,5 @@
 ---
-name: Sync Issues
+name: sync
 
 on:
   push:
@@ -33,7 +33,7 @@ concurrency:
 
 jobs:
   sync:
-    name: Sync Issues
+    name: issues
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
 

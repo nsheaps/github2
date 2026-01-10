@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   check:
-    name: ci / check
+    name: check
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -52,7 +52,7 @@ jobs:
         continue-on-error: true
 
   test:
-    name: ci / test
+    name: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -79,7 +79,7 @@ jobs:
         run: yarn test:all
 
   build:
-    name: ci / build
+    name: build
     runs-on: ubuntu-latest
     permissions:
       contents: read

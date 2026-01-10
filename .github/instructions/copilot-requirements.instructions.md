@@ -48,6 +48,13 @@ See: `.github/instructions/github-actions-workflows.instructions.md`
 - Common pitfalls and solutions
 - Debugging with GitHub MCP tools
 
+### Workflow and Job Naming
+See: `.github/instructions/workflow-naming-conventions.instructions.md`
+- Always use lowercase for workflow and job names
+- Never duplicate workflow name in job name
+- When to document new patterns repository-wide
+- Pattern recognition triggers
+
 ### TODO/Issue Sync
 See: `/docs/specs/project-requirements.md` → "TODO/Issue Synchronization System"
 - State machine logic
@@ -62,12 +69,17 @@ Add to `/docs/specs/project-requirements.md` when:
 - User corrects a misconception
 - User establishes a new convention or pattern
 - An important technical decision is made
+- **User suggests a pattern that should apply repository-wide**
+- **Deviating from suggested pattern would create inconsistency**
 
 Do NOT add:
 - Obvious best practices
 - Framework-standard conventions
 - Temporary or one-off instructions
 - Implementation details
+
+### Pattern Recognition
+When a user suggests a pattern across the whole repo (or one that should be considered a pattern, since a deviation from it would have 2 patterns in the same codebase), capture it in the appropriate Copilot instructions file immediately.
 
 ## Tools for Checking CI
 
