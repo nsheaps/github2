@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Claude Code SessionStart Hook for github2
 # This script runs when Claude Code starts, resumes, or clears a session
 
