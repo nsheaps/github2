@@ -18,7 +18,7 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "env": {
-        "MEMORY_FILE_PATH": "/home/user/github2/.claude/memory.jsonl"
+        "MEMORY_FILE_PATH": ".claude/memory.jsonl"
       }
     }
   }
