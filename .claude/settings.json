@@ -1,5 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "\nCo-Authored-By: Claude Code (${CLAUDE_PROJECT_DIR}) <noreply@anthropic.com>",
+    "pullRequests": "\nCo-Authored-By: Claude Code (${CLAUDE_PROJECT_DIR}) <noreply@anthropic.com>"
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -7,7 +11,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/claude/sessionstart.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start start"
           }
         ]
       },
@@ -16,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/claude/sessionstart.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start resume"
           }
         ]
       },
@@ -25,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/claude/sessionstart.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start resume"
           }
         ]
       },
@@ -34,15 +38,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/claude/sessionstart.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start resume"
           }
         ]
       }
     ]
   },
   "permissions": {
-    "allow": [
+    "allow": [ 
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "TodoWrite",
+      "Task",
+      "NotebookEdit",
+      "Skill",
+
       "WebSearch",
+      "WebFetch",
+
       "WebFetch(github.com)",
       "WebFetch(*.github.com)",
       "WebFetch(github.io)",
@@ -55,95 +71,40 @@
       "WebFetch(*.claude.com)",
       "WebFetch(claude.ai)",
       "WebFetch(*.claude.ai)",
-      "WebFetch(code.claude.com)",
-      "WebFetch(react.dev)",
-      "WebFetch(*.react.dev)",
-      "WebFetch(developer.mozilla.org)",
       "WebFetch(*.mozilla.org)",
-      "WebFetch(nodejs.org)",
-      "WebFetch(*.nodejs.org)",
-      "WebFetch(npmjs.com)",
-      "WebFetch(*.npmjs.com)",
-      "WebFetch(vitejs.dev)",
-      "WebFetch(*.vitejs.dev)",
-      "WebFetch(vitest.dev)",
-      "WebFetch(*.vitest.dev)",
-      "WebFetch(typescript.org)",
-      "WebFetch(*.typescriptlang.org)",
-      "WebFetch(eslint.org)",
-      "WebFetch(*.eslint.org)",
-      "WebFetch(prettier.io)",
-      "WebFetch(recharts.org)",
-      "WebFetch(*.recharts.org)",
-      "WebFetch(testing-library.com)",
-      "WebFetch(*.testing-library.com)",
       "WebFetch(json-schema.org)",
       "WebFetch(schemastore.org)",
       "WebFetch(*.schemastore.org)",
-      "Read",
-      "Write",
-      "Edit",
-      "Glob",
-      "Grep",
-      "TodoWrite",
-      "Task",
-      "WebFetch",
-      "NotebookEdit",
-      "Skill",
-      "Bash(npm run:*)",
-      "Bash(npm ci:*)",
-      "Bash(npm install:*)",
-      "Bash(npm test:*)",
-      "Bash(npm run lint:*)",
-      "Bash(npm run format:*)",
-      "Bash(npm run build:*)",
-      "Bash(npx:*)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git branch:*)",
-      "Bash(git show:*)",
-      "Bash(git fetch:*)",
-      "Bash(git pull:*)",
-      "Bash(git checkout:*)",
-      "Bash(git stash:*)",
-      "Bash(git merge:*)",
-      "Bash(git rebase:*)",
-      "Bash(git remote:*)",
-      "Bash(git rev-parse:*)",
+
       "Bash(ls:*)",
       "Bash(pwd:*)",
-      "Bash(which:*)",
-      "Bash(echo:*)",
-      "Bash(mkdir:*)",
-      "Bash(touch:*)",
+      "Bash(mkdir -p:*)",
       "Bash(chmod:*)",
       "Bash(ln:*)",
-      "Bash(node:*)",
-      "Bash(tsc:*)",
-      "Bash(vitest:*)"
+
+      "Bash(brew search:*)",
+      "Bash(brew info:*)",
+
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+
+      "Bash(wc:*)",
+      "Bash(man:*)",
+
+      "Bash(mise:*)"
     ],
-    "ask": [
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(git reset:*)",
-      "Bash(rm:*)",
-      "Bash(mv:*)",
-      "Bash(cp:*)",
-      "Bash",
-      "KillShell",
-      "TaskOutput"
-    ],
+    "ask": [],
     "deny": [
-      "Read(.env)",
-      "Read(.env.*)",
-      "Read(secrets/**)",
-      "Read(**/*credentials*)",
-      "Read(**/*secret*)"
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /:*)"
     ]
   },
   "enabledPlugins": {
-    "code-review@anthropics": true
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   }
 }
