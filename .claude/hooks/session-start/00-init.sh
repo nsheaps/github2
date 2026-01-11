@@ -11,21 +11,6 @@ echo "[SessionStart] Starting session setup for github2..."
 echo "[SessionStart] Project directory: $PROJECT_DIR"
 echo "[SessionStart] Remote environment: ${CLAUDE_CODE_REMOTE:-false}"
 
-# Install npm dependencies if package.json exists
-if [ -f "$PROJECT_DIR/package.json" ]; then
-    echo "[SessionStart] Installing npm dependencies..."
-    cd "$PROJECT_DIR"
-
-    # Use npm ci for clean install (faster, exact versions from lockfile)
-    if [ -f "$PROJECT_DIR/package-lock.json" ]; then
-        npm ci --silent 2>/dev/null || npm install --silent
-    else
-        npm install --silent
-    fi
-
-    echo "[SessionStart] npm dependencies installed."
-fi
-
 # Persist environment variables for subsequent commands (web environment only)
 if [ -n "$CLAUDE_ENV_FILE" ]; then
     echo "[SessionStart] Persisting environment variables..."
