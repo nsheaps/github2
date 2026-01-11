@@ -16,9 +16,9 @@
       "description": "Persistent memory storage for session information",
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"],,
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
       "env": {
-        "MEMORY_FILE_PATH": "/path/to/custom/memory.jsonl"
+        "MEMORY_FILE_PATH": "/home/user/github2/.claude/memory.jsonl"
       }
     }
   }
