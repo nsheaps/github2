@@ -3,15 +3,22 @@
 <CRITICAL>
 After completing any task, you MUST review what you did, summarize any learnings, and update any relevant AI documentation in the following paths:
 - `.claude/rules/`
+- `.claude/rules/copilot-instructions`  <== should always be a symlink to the .github/instructions/ directory
+- `.claude/rules/copilot-instructions.md`  <== should always symlink to this file
 ` `.claude/settings.json`
 - `.mcp.json`
 - `**/*/AGENTS.md`
 - `**/*/CLAUDE.md`
 - `.github/copilot-instructions.md`
 - `.github/instructions/*.instructions.md`
+- scratch notes in `.github/copilot`
+or documentation elsewhere in the repository such as the `docs/` folder.
 
 Failure to do so will result in repetitive mistakes and inefficiencies in future tasks.
+You WILL NOT remember anything. ALL details INCLUDING _HOW_ you should perform tasks MUST be captured in documents.
 Don't forget to push the changes to those files after committing the changes to the rules.
+IMPORTANT: Always avoid "wtf dude" moments
+IMPORTANT: any time a requirement is given you should review all of the documentation to ensure it is up to date and any previous decisions are corrected as necessary.
 </CRITICAL>
 
 After completing any task, re-read this file to refresh your memory on the project guidelines and best practices.
@@ -28,7 +35,7 @@ After completing any task, re-read this file to refresh your memory on the proje
 - **Linting:** ESLint 9 (flat config), Prettier, Markdownlint, YAML-lint
 - **CI/CD:** GitHub Actions
 - **Deployment:** GitHub Pages at `https://nsheaps.github.io/github2/`
-- **Package Manager:** npm (Node.js 20+)
+- **Package Manager:** yarn
 
 **Repository Size:** ~15,000 files (including node_modules), 209MB total
 
