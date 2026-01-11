@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "\nCo-Authored-By: Claude Code (${CLAUDE_PROJECT_DIR}) <noreply@anthropic.com>",
+    "pullRequests": "\nCo-Authored-By: Claude Code (${CLAUDE_PROJECT_DIR}) <noreply@anthropic.com>"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start start"
+          }
+        ]
+      },
+      {
+        "matcher": "resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start resume"
+          }
+        ]
+      },
+      {
+        "matcher": "clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start resume"
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run-hook.sh session-start resume"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [ 
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "TodoWrite",
+      "Task",
+      "NotebookEdit",
+      "Skill",
+
+      "WebSearch",
+      "WebFetch",
+
+      "WebFetch(github.com)",
+      "WebFetch(*.github.com)",
+      "WebFetch(github.io)",
+      "WebFetch(*.github.io)",
+      "WebFetch(docs.github.com)",
+      "WebFetch(github.blog)",
+      "WebFetch(anthropic.com)",
+      "WebFetch(*.anthropic.com)",
+      "WebFetch(claude.com)",
+      "WebFetch(*.claude.com)",
+      "WebFetch(claude.ai)",
+      "WebFetch(*.claude.ai)",
+      "WebFetch(*.mozilla.org)",
+      "WebFetch(json-schema.org)",
+      "WebFetch(schemastore.org)",
+      "WebFetch(*.schemastore.org)",
+
+      "Bash(ls:*)",
+      "Bash(pwd:*)",
+      "Bash(mkdir -p:*)",
+      "Bash(chmod:*)",
+      "Bash(ln:*)",
+
+      "Bash(brew search:*)",
+      "Bash(brew info:*)",
+
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+
+      "Bash(wc:*)",
+      "Bash(man:*)",
+
+      "Bash(mise:*)"
+    ],
+    "ask": [],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /:*)"
+    ]
+  },
+  "enabledPlugins": {
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  }
+}
