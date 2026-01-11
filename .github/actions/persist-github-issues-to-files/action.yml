@@ -1,0 +1,90 @@
+name: 'Persist GitHub Issues to Files'
+description: 'Bidirectional sync between .github/issues/*.md files and GitHub Issues'
+author: 'github2'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access'
+    required: true
+  event-name:
+    description: 'The GitHub event name (push, pull_request, issues)'
+    required: true
+  event-action:
+    description: 'The event action (opened, edited, closed, etc.)'
+    required: false
+    default: ''
+  issue-number:
+    description: 'Issue number for issue events'
+    required: false
+    default: ''
+  base-branch:
+    description: 'Base branch for PR comparisons'
+    required: false
+    default: 'main'
+
+outputs:
+  synced-issues:
+    description: 'Comma-separated list of synced issue numbers'
+    value: ${{ steps.sync.outputs.synced-issues }}
+  created-issues:
+    description: 'Comma-separated list of newly created issue numbers'
+    value: ${{ steps.sync.outputs.created-issues }}
+  updated-docs:
+    description: 'Comma-separated list of updated doc files'
+    value: ${{ steps.sync.outputs.updated-docs }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install action dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        if [ -f "package.json" ]; then
+          yarn install --immutable
+        fi
+
+    - name: Run sync
+      id: sync
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        EVENT_NAME: ${{ inputs.event-name }}
+        EVENT_ACTION: ${{ inputs.event-action }}
+        ISSUE_NUMBER: ${{ inputs.issue-number }}
+        BASE_BRANCH: ${{ inputs.base-branch }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_WORKSPACE: ${{ github.workspace }}
+      run: |
+        echo "Running issue sync..."
+        echo "Event: $EVENT_NAME"
+        echo "Action: $EVENT_ACTION"
+
+        # TODO: Implement actual sync logic
+        # For now, this is a placeholder that logs what would happen
+
+        case "$EVENT_NAME" in
+          "issues")
+            echo "Issue event detected for issue #$ISSUE_NUMBER"
+            case "$EVENT_ACTION" in
+              "opened"|"edited")
+                echo "Would sync issue #$ISSUE_NUMBER to doc file"
+                ;;
+              "closed")
+                echo "Would delete doc file for issue #$ISSUE_NUMBER"
+                ;;
+            esac
+            ;;
+          "push")
+            echo "Push to main detected - would sync docs to issues"
+            ;;
+          "pull_request")
+            echo "PR detected - would scan for TODOs"
+            ;;
+        esac
+
+        # Set outputs (empty for now)
+        echo "synced-issues=" >> $GITHUB_OUTPUT
+        echo "created-issues=" >> $GITHUB_OUTPUT
+        echo "updated-docs=" >> $GITHUB_OUTPUT

@@ -1,0 +1,73 @@
+name: sync-issues
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/issues/**'
+      - '.github/actions/persist-github-issues-to-files/**'
+      - '.github/workflows/sync-issues.yml'
+  pull_request:
+    paths:
+      - '.github/issues/**'
+      - 'src/**'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.py'
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+# Prevent race conditions - only one sync at a time per context
+concurrency:
+  group: sync-issues-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  sync:
+    name: issues
+    runs-on: ubuntu-latest
+    # Skip commits made by this workflow to prevent infinite loops
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Need full history for git operations
+          fetch-depth: 0
+          # Use a token that can push commits
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          # Note: No cache here - corepack must be enabled first
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install Corepack
+        run: corepack install
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run issue sync
+        uses: ./.github/actions/persist-github-issues-to-files
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          event-name: ${{ github.event_name }}
+          event-action: ${{ github.event.action }}
+          issue-number: ${{ github.event.issue.number }}
+          base-branch: ${{ github.event.pull_request.base.ref || 'main' }}
