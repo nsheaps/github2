@@ -22,3 +22,23 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+__pycache__/
+
+# GitHub Actions TypeScript
+.github/src/dist/
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# NX
+.nx/cache
