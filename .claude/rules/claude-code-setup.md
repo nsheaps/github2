@@ -12,14 +12,7 @@ This repository is configured for Claude Code (CLI and Web). The configuration e
 ## Quick Reference
 
 ### Build Commands
-
-```bash
-npm ci                 # Install dependencies (preferred)
-npm run lint           # Run all linters
-npm test               # Run tests
-npm run build          # Build for production
-npm run dev            # Start development server
-```
+You may see evidence of npm but we are transitioning to yarn
 
 ### Full Validation (Before Pushing)
 
@@ -57,62 +50,9 @@ Configured in `.mcp.json`:
 
 | Server | Purpose |
 |--------|---------|
-| `thinking` | Structured thinking and reasoning |
 | `context7` | Context management and memory |
-| `filesystem` | File system operations |
-| `github` | GitHub API integration |
-| `git` | Git repository operations |
 | `sequential-thinking` | Step-by-step reasoning |
 | `memory` | Persistent session memory |
-| `fetch` | HTTP fetch operations |
-
-## Tool Permissions
-
-### Allowed (No Confirmation)
-- **WebSearch** - Web searches
-- **WebFetch** - Specific domains (GitHub, Anthropic, React, MDN, etc.)
-- **File Tools** - Read, Write, Edit, Glob, Grep
-- **Task Management** - TodoWrite, Task, Skill
-- **Safe Bash** - npm, npx, git (read ops), ls, mkdir, etc.
-
-### Ask (Requires Confirmation)
-- **Git Write Ops** - git add, commit, push, reset
-- **File Ops** - rm, mv, cp
-- **Generic Bash** - Unspecified bash commands
-- **Shell Control** - KillShell, TaskOutput
-
-### Denied
-- Sensitive files (.env, secrets, credentials)
-
-## Plugins
-
-The code-review plugin from the official Anthropic marketplace is enabled:
-- Reference: `code-review@anthropics`
-- Use `/code-review` command to run automated PR review
-
-## Project Structure
-
-```
-github2/
-├── .claude/
-│   ├── settings.json                   # Claude Code settings
-│   ├── user-home-claude                -> ~/.claude (symlink for access)
-│   ├── rules/
-│   │   ├── copilot-instructions        -> ../../.github/instructions/
-│   │   ├── copilot-instructions.md     -> ../../.github/copilot-instructions.md
-│   │   └── claude-code-setup.md        # This file
-│   └── sessions/                       # Session-specific data
-├── .github/
-│   ├── copilot-instructions.md         # Main coding agent instructions
-│   ├── instructions/                   # Additional instruction files
-│   └── workflows/                      # CI/CD pipelines
-├── .mcp.json                           # MCP server configuration
-├── scripts/
-│   └── claude/
-│       └── sessionstart.sh             # SessionStart hook
-├── src/                                # React application source
-└── docs/                               # Documentation
-```
 
 ## Tech Stack
 
