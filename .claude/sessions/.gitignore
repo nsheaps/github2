@@ -1,0 +1,4 @@
+sessions/
+# Ignore session-specific files but keep the directory
+!.gitkeep
+!.gitignore
